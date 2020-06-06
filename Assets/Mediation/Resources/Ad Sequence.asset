@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d913cf2e46b0a942bac8d4fafbe13a1, type: 3}
+  m_Name: Ad Sequence
+  m_EditorClassIdentifier: 
+  logType: 1
+  GameName: McFairy Ads
+  PackageName: 
+  platform: 0
+  sequence:
+  - sceneName: 0
+    sequence: 0000000001000000
+    failOver: 2
+  AdmobIds:
+    Interstitial: ca-app-pub-3940256099942544/1033173712
+    Banner: ca-app-pub-3940256099942544/6300978111
+    RewardedVideo: ca-app-pub-3940256099942544/5224354917
+    Native: 
+  FacebookIds:
+    Interstitial: 2295292320706597_2295292590706570
+    Banner: 2295292320706597_2295293444039818
+    RewardedVideo: 
+    Native: 
+  unityAdsIds:
+    AppId: 2790170
+    InterstitialPlacementID: video
+    BannerPlacementID: 
+    RewardedPlacementID: rewardedVideo
