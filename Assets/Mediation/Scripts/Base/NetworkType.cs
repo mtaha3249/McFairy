@@ -1,16 +1,9 @@
 ﻿using System;
 
-namespace McFairy
+namespace McFairy.Base
 {
     public class NetworkType
     {
-        public enum InterstitialAdType
-        {
-            Admob = 0,
-            Unity = 1,
-            Facebook = 2,
-            Crosspromotion = 3
-        }
         public enum SceneName
         {
             MainMenu = 0,
@@ -42,35 +35,22 @@ namespace McFairy
         public struct SceneSequence
         {
             public SceneName sceneName;
-            public InterstitialAdType[] sequence;
-            public InterstitialAdType failOver;
+            public Interstitial interstitial;
+            public Rewarded rewarded;
         }
 
         [Serializable]
-        public struct AdmobIDs
+        public struct Interstitial
         {
-            public string Interstitial;
-            public string Banner;
-            public string RewardedVideo;
-            public string Native;
+            public EditableScript.InterstitialAdType[] sequence;
+            public EditableScript.InterstitialAdType failOver;
         }
 
         [Serializable]
-        public struct FacebookIDs
+        public struct Rewarded
         {
-            public string Interstitial;
-            public string Banner;
-            public string RewardedVideo;
-            public string Native;
-        }
-
-        [Serializable]
-        public struct UnityAdsIDs
-        {
-            public string AppId;
-            public string InterstitialPlacementID;
-            public string BannerPlacementID;
-            public string RewardedPlacementID;
+            public EditableScript.RewardedAdType[] sequence;
+            public EditableScript.RewardedAdType failOver;
         }
     }
 }

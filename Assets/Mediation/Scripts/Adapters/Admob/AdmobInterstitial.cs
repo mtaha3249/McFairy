@@ -1,10 +1,12 @@
 ﻿using GoogleMobileAds.Api;
 using System;
 using UnityEngine;
+using McFairy.Base;
+using McFairy.Logger;
 
-namespace McFairy
+namespace McFairy.Adpater.Admob
 {
-    public class AdmobInterstitial : AdNetwork
+    public class AdmobInterstitial : InterstitialBase
     {
         private InterstitialAd interstitial;
 
@@ -28,6 +30,7 @@ namespace McFairy
         private void HandleOnAdClosed(object sender, EventArgs e)
         {
             interstitial.Destroy();
+            LoadAd();
             Logs.ShowLog("Admob Interstitial Ad Closed", LogType.Log);
         }
 

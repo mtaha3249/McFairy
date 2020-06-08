@@ -1,6 +1,7 @@
-﻿namespace McFairy
+﻿
+namespace McFairy.Base
 {
-    public abstract class AdNetwork
+    public abstract class InterstitialBase
     {
         public bool isAdLoaded;
         /// <summary>

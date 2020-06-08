@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace McFairy
+namespace McFairy.Base
 {
     public class Validator
     {
@@ -10,17 +10,17 @@ namespace McFairy
         /// <param name="_namespace">namespace to find</param>
         /// <param name="_classname">script to find</param>
         /// <returns>created network if script found otherwise null</returns>
-        public static AdNetwork validateScript(string _namespace, string _classname)
+        public static T validateScript<T>(string _namespace, string _classname)
         {
             var myClassType = Type.GetType(string.Format("{0}.{1}", _namespace, _classname));
             if (myClassType != null)
             {
                 var inst = Activator.CreateInstance(myClassType);
-                return (AdNetwork)inst;
+                return (T)inst;
             }
             else
             {
-                return null;
+                return default(T);
             }
         }
 
@@ -29,17 +29,17 @@ namespace McFairy
         /// </summary>
         /// <param name="_classname">script to find</param>
         /// <returns>created network if script found otherwise null</returns>
-        public static AdNetwork validateScript(string _classname)
+        public static T validateScript<T>(string _classname)
         {
             var myClassType = Type.GetType(string.Format("{0}", _classname));
             if (myClassType != null)
             {
                 var inst = Activator.CreateInstance(myClassType);
-                return (AdNetwork)inst;
+                return (T)inst;
             }
             else
             {
-                return null;
+                return default(T);
             }
         }
     }

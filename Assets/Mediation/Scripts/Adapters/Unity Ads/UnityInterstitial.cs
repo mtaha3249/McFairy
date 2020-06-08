@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.Advertisements;
+using McFairy.Base;
+using McFairy.SO;
+using McFairy.Logger;
 
-namespace McFairy
+namespace McFairy.Adpater.UnityAds
 {
-    public class UnityInterstitial : AdNetwork, IUnityAdsListener
+    public class UnityInterstitial : InterstitialBase, IUnityAdsListener
     {
         string placementID = "";
         public override void Initialize(string id = "", string appId = "")
         {
             Advertisement.AddListener(this);
             Advertisement.Initialize(appId);
-            placementID = AdSequence.Instance.unityAdsIds.InterstitialPlacementID;
+            placementID = AdSequence.Instance.adIds.unityAdsIds.InterstitialPlacementID;
         }
 
         public override void LoadAd()
@@ -27,6 +30,7 @@ namespace McFairy
             if (placementId == placementID)
             {
                 isAdLoaded = false;
+                LoadAd();
                 Logs.ShowLog("UnityAds Interstitial Completed", LogType.Log);
             }
         }
@@ -47,7 +51,7 @@ namespace McFairy
         public override void ShowAd()
         {
             if (isAdLoaded)
-                Advertisement.Show(AdSequence.Instance.unityAdsIds.InterstitialPlacementID);
+                Advertisement.Show(AdSequence.Instance.adIds.unityAdsIds.InterstitialPlacementID);
         }
     }
 }

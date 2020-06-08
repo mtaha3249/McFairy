@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using McFairy.SO;
+using McFairy.Base;
 
-namespace McFairy
+namespace McFairy.Logger
 {
     public class Logs
     {

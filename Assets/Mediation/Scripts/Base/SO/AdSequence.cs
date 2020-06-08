@@ -2,8 +2,9 @@
 using UnityEditor;
 #endif
 using UnityEngine;
+using McFairy.Base;
 
-namespace McFairy
+namespace McFairy.SO
 {
     public class AdSequence : ScriptableObject
     {
@@ -40,9 +41,7 @@ namespace McFairy
         [Header("Ad Sequences")]
         public NetworkType.SceneSequence[] sequence;
 
-        [Header("Ad Id's")]
-        public NetworkType.AdmobIDs AdmobIds;
-        public NetworkType.FacebookIDs FacebookIds;
-        public NetworkType.UnityAdsIDs unityAdsIds;
+        [Space(5)]
+        public EditableScript.AdIds adIds;
     }
 }

@@ -1,9 +1,11 @@
 ﻿using AudienceNetwork;
 using UnityEngine;
+using McFairy.Base;
+using McFairy.Logger;
 
-namespace McFairy
+namespace McFairy.Adpater.AudienceNetwork
 {
-    public class FacebookInterstitial : AdNetwork
+    public class FacebookInterstitial : InterstitialBase
     {
         private InterstitialAd interstitialAd;
         public override void Initialize(string id = "", string appId = "")
@@ -11,7 +13,7 @@ namespace McFairy
 #if !UNITY_EDITOR
             AudienceNetworkAds.Initialize();
             interstitialAd = new InterstitialAd(id);
-            interstitialAd.Register(McFairy.Instance.gameObject);
+            interstitialAd.Register(McFairyAdsMediation.Instance.gameObject);
 
             interstitialAd.InterstitialAdDidLoad = delegate ()
             {
@@ -35,6 +37,7 @@ namespace McFairy
             {
                 Logs.ShowLog("Interstitial ad did close.", LogType.Log);
                 isAdLoaded = false;
+                LoadAd();
             };
 #endif
         }
