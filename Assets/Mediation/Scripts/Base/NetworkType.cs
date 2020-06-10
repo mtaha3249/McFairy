@@ -19,6 +19,22 @@ namespace McFairy.Base
             MidScene3 = 10
         }
 
+        public enum BannerPosition
+        {
+            Top_Center = 0,
+            Top_Right = 1,
+            Top_Left = 2,
+            Bottom_Center = 3,
+            Bottom_Right = 4,
+            Bottom_Left = 5
+        }
+
+        public enum BannerSize
+        {
+            Banner = 0,
+            SmartBanner = 1
+        }
+
         public enum Platforms
         {
             Google = 0,
@@ -37,6 +53,7 @@ namespace McFairy.Base
             public SceneName sceneName;
             public Interstitial interstitial;
             public Rewarded rewarded;
+            public Banner banner;
         }
 
         [Serializable]
@@ -51,6 +68,16 @@ namespace McFairy.Base
         {
             public EditableScript.RewardedAdType[] sequence;
             public EditableScript.RewardedAdType failOver;
+        }
+
+        [Serializable]
+        public struct Banner
+        {
+            public bool Enable;
+            public BannerSize BannerSize;
+            public BannerPosition bannerPosition;
+            public EditableScript.BannerAdType[] sequence;
+            public EditableScript.BannerAdType failOver;
         }
     }
 }

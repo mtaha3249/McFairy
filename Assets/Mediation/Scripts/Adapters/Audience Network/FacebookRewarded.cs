@@ -7,17 +7,21 @@ namespace McFairy.Adpater.AudienceNetwork
 {
     public class FacebookRewarded : RewardedBase
     {
+        bool _isAdLoaded = false;
         private RewardedVideoAd rewardedVideoAd;
         public override void Initialize(string id = "", string appId = "")
         {
 #if !UNITY_EDITOR
-            AudienceNetworkAds.Initialize();
+            if (!AudienceNetworkAds.IsInitialized())
+            {
+                AudienceNetworkAds.Initialize();
+            }
             rewardedVideoAd = new RewardedVideoAd(id);
             rewardedVideoAd.Register(McFairyAdsMediation.Instance.gameObject);
 
             rewardedVideoAd.RewardedVideoAdDidLoad = delegate ()
             {
-                isAdLoaded = true;
+                _isAdLoaded = true;
                 if (OnAdLoaded != null)
                 {
                     OnAdLoaded.Invoke();
@@ -27,7 +31,7 @@ namespace McFairy.Adpater.AudienceNetwork
             rewardedVideoAd.RewardedVideoAdDidFailWithError = delegate (string error)
             {
                 LoadAd();
-                Logs.ShowLog("Audience Network Rewarded Video fail to load with error: " + error, LogType.Error);
+                Logs.ShowLog("Audience Network Rewarded Video fail to load with error: " + error, LogType.Log);
             };
             rewardedVideoAd.RewardedVideoAdWillLogImpression = delegate ()
             {
@@ -50,7 +54,7 @@ namespace McFairy.Adpater.AudienceNetwork
 
             rewardedVideoAd.RewardedVideoAdDidClose = delegate ()
             {
-                isAdLoaded = false;
+                _isAdLoaded = false;
                 if (OnAdCompleted != null)
                 {
                     OnAdCompleted.Invoke();
@@ -60,6 +64,11 @@ namespace McFairy.Adpater.AudienceNetwork
                 LoadAd();
             };
 #endif
+        }
+
+        public override bool isAdLoaded()
+        {
+            return _isAdLoaded;
         }
 
         public override void LoadAd()
@@ -72,7 +81,7 @@ namespace McFairy.Adpater.AudienceNetwork
         public override void ShowAd()
         {
 #if !UNITY_EDITOR
-            if (isAdLoaded)
+            if (isAdLoaded())
                 rewardedVideoAd.Show();
 #endif
         }

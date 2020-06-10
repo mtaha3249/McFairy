@@ -29,8 +29,9 @@ namespace McFairy.Base
         }
 
         /// <summary>
-        /// Initialize Ad base on interstitialAdType
+        /// Initialize Ad base on AdType
         /// </summary>
+        /// <typeparam name="T">Generic Ad Type</typeparam>
         /// <param name="adType">type of ad to initialzed</param>
         /// <param name="initializedAds">list of ads initialized</param>
         /// <param name="uIdentifier">unique identifier of ad Network, use const of this class</param>
@@ -56,6 +57,16 @@ namespace McFairy.Base
                         GetAdNetwork<EditableScript.RewardedAdType, RewardedBase>((EditableScript.RewardedAdType)convertedEnum).Initialize
                             (EditableScript.getId(adType), EditableScript.getAppId(adType));
                         Logs.ShowLog(adType.ToString() + " Rewarded Initialized", LogType.Log);
+                        initializedAds.Add(Convert.ToInt32(convertedEnum));
+                        return true;
+                    }
+                    break;
+                case bannerID:
+                    if (!initializedAds.Contains(Convert.ToInt32(convertedEnum)) && GetAdNetwork<T, BannerBase>(adType) != null)
+                    {
+                        GetAdNetwork<EditableScript.BannerAdType, BannerBase>((EditableScript.BannerAdType)convertedEnum).Initialize
+                            (EditableScript.getId(adType), EditableScript.getAppId(adType));
+                        Logs.ShowLog(adType.ToString() + " Banner Initialized", LogType.Log);
                         initializedAds.Add(Convert.ToInt32(convertedEnum));
                         return true;
                     }

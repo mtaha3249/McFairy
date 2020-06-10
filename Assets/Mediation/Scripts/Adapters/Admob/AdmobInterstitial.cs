@@ -8,6 +8,7 @@ namespace McFairy.Adpater.Admob
 {
     public class AdmobInterstitial : InterstitialBase
     {
+        bool _isAdLoaded = false;
         private InterstitialAd interstitial;
 
         public override void Initialize(string id = "", string appId = "")
@@ -36,7 +37,7 @@ namespace McFairy.Adpater.Admob
 
         private void HandleOnAdOpened(object sender, EventArgs e)
         {
-            isAdLoaded = false;
+            _isAdLoaded = false;
             Logs.ShowLog("Admob Interstitial Ad Shown", LogType.Log);
         }
 
@@ -47,7 +48,7 @@ namespace McFairy.Adpater.Admob
 
         private void HandleOnAdLoaded(object sender, EventArgs e)
         {
-            isAdLoaded = true;
+            _isAdLoaded = true;
             Logs.ShowLog("Admob Interstitial Ad Loaded", LogType.Log);
         }
 
@@ -59,8 +60,13 @@ namespace McFairy.Adpater.Admob
 
         public override void ShowAd()
         {
-            if (isAdLoaded)
+            if (isAdLoaded())
                 interstitial.Show();
+        }
+
+        public override bool isAdLoaded()
+        {
+            return _isAdLoaded;
         }
     }
 }

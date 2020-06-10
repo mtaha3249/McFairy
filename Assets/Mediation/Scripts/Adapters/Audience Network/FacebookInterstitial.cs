@@ -7,18 +7,22 @@ namespace McFairy.Adpater.AudienceNetwork
 {
     public class FacebookInterstitial : InterstitialBase
     {
+        bool _isAdLoaded = false;
         private InterstitialAd interstitialAd;
         public override void Initialize(string id = "", string appId = "")
         {
 #if !UNITY_EDITOR
-            AudienceNetworkAds.Initialize();
+            if (!AudienceNetworkAds.IsInitialized())
+            {
+                AudienceNetworkAds.Initialize();
+            }
             interstitialAd = new InterstitialAd(id);
             interstitialAd.Register(McFairyAdsMediation.Instance.gameObject);
 
             interstitialAd.InterstitialAdDidLoad = delegate ()
             {
                 Logs.ShowLog("Interstitial ad loaded.", LogType.Log);
-                isAdLoaded = true;
+                _isAdLoaded = true;
             };
             interstitialAd.InterstitialAdDidFailWithError = delegate (string error)
             {
@@ -36,10 +40,15 @@ namespace McFairy.Adpater.AudienceNetwork
             interstitialAd.InterstitialAdDidClose = delegate ()
             {
                 Logs.ShowLog("Interstitial ad did close.", LogType.Log);
-                isAdLoaded = false;
+                _isAdLoaded = false;
                 LoadAd();
             };
 #endif
+        }
+
+        public override bool isAdLoaded()
+        {
+            return _isAdLoaded;
         }
 
         public override void LoadAd()
@@ -52,7 +61,7 @@ namespace McFairy.Adpater.AudienceNetwork
         public override void ShowAd()
         {
 #if !UNITY_EDITOR
-            if (isAdLoaded)
+            if (isAdLoaded())
                 interstitialAd.Show();
 #endif
         }

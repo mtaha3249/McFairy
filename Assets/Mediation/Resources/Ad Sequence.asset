@@ -19,11 +19,43 @@ MonoBehaviour:
   sequence:
   - sceneName: 0
     interstitial:
-      sequence: 0000000002000000
-      failOver: 1
+      sequence: 00000000
+      failOver: 2
     rewarded:
       sequence: 0a000000
       failOver: 12
+    banner:
+      Enable: 1
+      BannerSize: 0
+      bannerPosition: 0
+      sequence: 14000000
+      failOver: 21
+  - sceneName: 1
+    interstitial:
+      sequence: 01000000
+      failOver: 0
+    rewarded:
+      sequence: 0b000000
+      failOver: 10
+    banner:
+      Enable: 1
+      BannerSize: 1
+      bannerPosition: 5
+      sequence: 16000000
+      failOver: 20
+  - sceneName: 3
+    interstitial:
+      sequence: 02000000
+      failOver: 1
+    rewarded:
+      sequence: 0c000000
+      failOver: 11
+    banner:
+      Enable: 1
+      BannerSize: 0
+      bannerPosition: 1
+      sequence: 15000000
+      failOver: 20
   adIds:
     admobIds:
       Interstitial: ca-app-pub-3940256099942544/1033173712

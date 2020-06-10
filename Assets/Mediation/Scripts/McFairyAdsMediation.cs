@@ -15,9 +15,18 @@ namespace McFairy
         List<int> initializedBannerAds = new List<int>();
         List<int> initializedNativeAds = new List<int>();
 
+        /// <summary>
+        /// Trigger Event when Rewarded Video Loaded
+        /// </summary>
         public RewardedBase.AdLoaded OnRewardedAdLoaded;
+        /// <summary>
+        /// Trigger Event when Rewarded Video Completed
+        /// </summary>
         public RewardedBase.AdCompleted OnRewardedAdCompleted;
 
+        /// <summary>
+        /// Static Intance of class
+        /// </summary>
         public static McFairyAdsMediation Instance;
 
         private void Awake()
@@ -88,6 +97,14 @@ namespace McFairy
                     NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].rewarded.sequence[y], initializedRewardedAds, NetworkInitialization.rewardedVideoID);
                 }
                 NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].rewarded.failOver, initializedRewardedAds, NetworkInitialization.rewardedVideoID);
+
+                // Banner Initalization
+                // iterate each scene
+                for (int y = 0; y < AdSequence.Instance.sequence[x].banner.sequence.Length; y++)
+                {
+                    NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].banner.sequence[y], initializedBannerAds, NetworkInitialization.bannerID);
+                }
+                NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].banner.failOver, initializedBannerAds, NetworkInitialization.bannerID);
             }
 
             Logs.ShowLog("InitializeAds Initialized", LogType.Log);
@@ -98,6 +115,11 @@ namespace McFairy
             }
         }
 
+        /// <summary>
+        /// Load All Initialized Ads.
+        /// Calls automatically when new scene loaded.
+        /// You can call that on demand
+        /// </summary>
         public void LoadAds()
         {
             // load all interstitial
@@ -117,6 +139,10 @@ namespace McFairy
             }
         }
 
+        /// <summary>
+        /// Show Interstitial Ad base on availability
+        /// </summary>
+        /// <param name="sceneId">scene index identifier</param>
         public void ShowInterstitialAd(int sceneId)
         {
             InterstitialBase adNetwork;
@@ -130,7 +156,7 @@ namespace McFairy
             {
                 adNetwork = NetworkInitialization.GetAdNetwork<EditableScript.InterstitialAdType, InterstitialBase>
                     (AdSequence.Instance.sequence[sceneId].interstitial.sequence[y]);
-                if (adNetwork.isAdLoaded)
+                if (adNetwork.isAdLoaded())
                 {
                     adNetwork.ShowAd();
                     return;
@@ -139,13 +165,17 @@ namespace McFairy
             //running failover
             adNetwork = NetworkInitialization.GetAdNetwork<EditableScript.InterstitialAdType, InterstitialBase>
                 (AdSequence.Instance.sequence[sceneId].interstitial.failOver);
-            if (adNetwork.isAdLoaded)
+            if (adNetwork.isAdLoaded())
             {
                 adNetwork.ShowAd();
                 return;
             }
         }
 
+        /// <summary>
+        /// Show Rewarded Ad base on availability
+        /// </summary>
+        /// <param name="sceneId">scene index identifier</param>
         public void ShowRewardedAd(int sceneId)
         {
             RewardedBase adNetwork;
@@ -159,7 +189,7 @@ namespace McFairy
             {
                 adNetwork = NetworkInitialization.GetAdNetwork<EditableScript.RewardedAdType, RewardedBase>
                     (AdSequence.Instance.sequence[sceneId].rewarded.sequence[y]);
-                if (adNetwork.isAdLoaded)
+                if (adNetwork.isAdLoaded())
                 {
                     adNetwork.ShowAd();
                     return;
@@ -168,11 +198,51 @@ namespace McFairy
             //running failover
             adNetwork = NetworkInitialization.GetAdNetwork<EditableScript.RewardedAdType, RewardedBase>
                 (AdSequence.Instance.sequence[sceneId].rewarded.failOver);
-            if (adNetwork.isAdLoaded)
+            if (adNetwork.isAdLoaded())
             {
                 adNetwork.ShowAd();
                 return;
             }
+        }
+
+        /// <summary>
+        /// banner ad network is out of function beacuse when we can cache ad of which ad network is showing so we can hide ad of only that ad network
+        /// </summary>
+        BannerBase bannerAdNetwork;
+
+        /// <summary>
+        /// Show Banner Ad base on availability
+        /// </summary>
+        /// <param name="sceneId">scene index identifier</param>
+        public void ShowBanner(int sceneId)
+        {
+            if (sceneId > AdSequence.Instance.sequence.Length - 1)
+            {
+                Logs.ShowLog("Scene Id is out of range", LogType.Error);
+                return;
+            }
+            // running sequence
+            for (int y = 0; y < AdSequence.Instance.sequence[sceneId].banner.sequence.Length; y++)
+            {
+                bannerAdNetwork = NetworkInitialization.GetAdNetwork<EditableScript.BannerAdType, BannerBase>
+                    (AdSequence.Instance.sequence[sceneId].banner.sequence[y]);
+                bannerAdNetwork.LoadAd(AdSequence.Instance.sequence[sceneId].banner.BannerSize, AdSequence.Instance.sequence[sceneId].banner.bannerPosition);
+                return;
+            }
+            //running failover
+            bannerAdNetwork = NetworkInitialization.GetAdNetwork<EditableScript.BannerAdType, BannerBase>
+                    (AdSequence.Instance.sequence[sceneId].banner.failOver);
+            bannerAdNetwork.LoadAd(AdSequence.Instance.sequence[sceneId].banner.BannerSize, AdSequence.Instance.sequence[sceneId].banner.bannerPosition);
+            return;
+        }
+
+        /// <summary>
+        /// Hide current showing ad Banner
+        /// </summary>
+        public void HideBanner()
+        {
+            if (bannerAdNetwork != null)
+                bannerAdNetwork.HideAd();
         }
     }
 }

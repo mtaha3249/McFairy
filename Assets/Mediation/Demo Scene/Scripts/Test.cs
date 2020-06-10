@@ -4,7 +4,7 @@ using UnityEngine;
 public class Test : MonoBehaviour
 {
     public GameObject rewardedButton;
-    public int SequenceID;
+    int SequenceID;
 
     private void Start()
     {
@@ -12,6 +12,13 @@ public class Test : MonoBehaviour
 
         McFairyAdsMediation.Instance.OnRewardedAdCompleted += OnRewardedCompleted;
         McFairyAdsMediation.Instance.OnRewardedAdLoaded += OnRewardedAdLoaded;
+    }
+
+    public void UpdateSequenceID(int index)
+    {
+        SequenceID = index;
+        HideBanner();
+        LoadAds();
     }
 
     void OnRewardedAdLoaded()
@@ -38,5 +45,15 @@ public class Test : MonoBehaviour
     public void ShowRewardedAds()
     {
         McFairyAdsMediation.Instance.ShowRewardedAd(SequenceID);
+    }
+
+    public void ShowBanner()
+    {
+        McFairyAdsMediation.Instance.ShowBanner(SequenceID);
+    }
+
+    public void HideBanner()
+    {
+        McFairyAdsMediation.Instance.HideBanner();
     }
 }

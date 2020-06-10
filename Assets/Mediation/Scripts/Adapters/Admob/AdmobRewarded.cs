@@ -8,6 +8,7 @@ namespace McFairy.Adpater.Admob
 {
     public class AdmobRewarded : RewardedBase
     {
+        bool _isAdLoaded = false;
         private RewardedAd rewardedAd;
 
         public override void Initialize(string id = "", string appId = "")
@@ -30,7 +31,7 @@ namespace McFairy.Adpater.Admob
 
         private void HandleUserEarnedReward(object sender, Reward e)
         {
-            isAdLoaded = false;
+            _isAdLoaded = false;
             if (OnAdCompleted != null)
             {
                 OnAdCompleted.Invoke();
@@ -57,7 +58,7 @@ namespace McFairy.Adpater.Admob
 
         private void HandleRewardedAdLoaded(object sender, EventArgs e)
         {
-            isAdLoaded = true;
+            _isAdLoaded = true;
             if (OnAdLoaded != null)
             {
                 OnAdLoaded.Invoke();
@@ -73,8 +74,13 @@ namespace McFairy.Adpater.Admob
 
         public override void ShowAd()
         {
-            if (isAdLoaded)
+            if (isAdLoaded())
                 rewardedAd.Show();
+        }
+
+        public override bool isAdLoaded()
+        {
+            return _isAdLoaded;
         }
     }
 }
