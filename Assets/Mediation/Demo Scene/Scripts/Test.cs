@@ -4,6 +4,8 @@ using UnityEngine;
 public class Test : MonoBehaviour
 {
     public GameObject rewardedButton;
+    public GameObject iconAd;
+    public GameObject nativeAd;
     int SequenceID;
 
     private void Start()
@@ -12,6 +14,14 @@ public class Test : MonoBehaviour
 
         McFairyAdsMediation.Instance.OnRewardedAdCompleted += OnRewardedCompleted;
         McFairyAdsMediation.Instance.OnRewardedAdLoaded += OnRewardedAdLoaded;
+
+        HideIconAd();
+        HideNativeAd();
+    }
+
+    public void InitializeMcFairy()
+    {
+        McFairyAdsMediation.Instance.Initialize();
     }
 
     public void UpdateSequenceID(int index)
@@ -19,6 +29,8 @@ public class Test : MonoBehaviour
         SequenceID = index;
         HideBanner();
         LoadAds();
+        HideIconAd();
+        HideNativeAd();
     }
 
     void OnRewardedAdLoaded()
@@ -52,8 +64,28 @@ public class Test : MonoBehaviour
         McFairyAdsMediation.Instance.ShowBanner(SequenceID);
     }
 
-    public void HideBanner()
+    void HideBanner()
     {
         McFairyAdsMediation.Instance.HideBanner();
+    }
+
+    public void ShowIconAd()
+    {
+        iconAd.SetActive(true);
+    }
+
+    void HideIconAd()
+    {
+        iconAd.SetActive(false);
+    }
+
+    public void ShowNativeAd()
+    {
+        nativeAd.SetActive(true);
+    }
+
+    void HideNativeAd()
+    {
+        nativeAd.SetActive(false);
     }
 }

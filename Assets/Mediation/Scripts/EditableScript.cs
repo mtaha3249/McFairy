@@ -30,6 +30,11 @@ namespace McFairy
             AudienceNetwork = 22
         }
 
+        public enum NativeAdType
+        {
+            Admob = 30
+        }
+
         [Serializable]
         public struct AdIds
         {
@@ -83,6 +88,8 @@ namespace McFairy
         public const string _unityBannerClassName = "UnityBanner";
         public const string _audienceNetworkBannerClassName = "AudienceNetworkBanner";
 
+        public const string _admobNativeAdClassName = "AdmobNativeAd";
+
         /// <summary>
         /// Initialize ad network object
         /// </summary>
@@ -115,6 +122,10 @@ namespace McFairy
             NetworkInitialization.dictionaryNetworks.Add((int)BannerAdType.AudienceNetwork, Validator.validateScript<BannerBase>(_newnamespace, _audienceNetworkBannerClassName));
             _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersUnityAds;
             NetworkInitialization.dictionaryNetworks.Add((int)BannerAdType.Unity, Validator.validateScript<BannerBase>(_newnamespace, _unityBannerClassName));
+
+            // Native Ad scripts finding and initialization
+            _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersAdmob;
+            NetworkInitialization.dictionaryNetworks.Add((int)NativeAdType.Admob, Validator.validateScript<NativeBase>(_newnamespace, _admobNativeAdClassName));
 
             Logs.ShowLog("InitializeAdNetworks Initialized", LogType.Log);
 
@@ -184,6 +195,11 @@ namespace McFairy
                     // Facebook
                     id = AdSequence.Instance.adIds.audienceNetworkIds.Banner;
                     break;
+                case 30:
+                    // Native
+                    // Admob
+                    id = AdSequence.Instance.adIds.admobIds.Native;
+                    break;
             }
             return id;
         }
@@ -246,6 +262,11 @@ namespace McFairy
                 case 22:
                     // Banner
                     // Facebook
+                    id = "";
+                    break;
+                case 30:
+                    // Native
+                    // Admob
                     id = "";
                     break;
             }

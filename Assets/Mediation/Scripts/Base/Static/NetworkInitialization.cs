@@ -71,6 +71,16 @@ namespace McFairy.Base
                         return true;
                     }
                     break;
+                case nativeID:
+                    if (!initializedAds.Contains(Convert.ToInt32(convertedEnum)) && GetAdNetwork<T, NativeBase>(adType) != null)
+                    {
+                        GetAdNetwork<EditableScript.NativeAdType, NativeBase>((EditableScript.NativeAdType)convertedEnum).Initialize
+                            (EditableScript.getId(adType), EditableScript.getAppId(adType));
+                        Logs.ShowLog(adType.ToString() + " Banner Initialized", LogType.Log);
+                        initializedAds.Add(Convert.ToInt32(convertedEnum));
+                        return true;
+                    }
+                    break;
             }
             return false;
         }

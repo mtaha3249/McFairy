@@ -1,23 +1,28 @@
 ﻿using McFairy;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IconAd : MonoBehaviour
 {
     public int SequenceIndex;
-    private void Start()
+    private void OnEnable()
     {
         ShowIconAd();
     }
 
-    public void ShowIconAd()
+    private void OnDisable()
     {
+        HideIconAd();
+    }
+
+    void ShowIconAd()
+    {
+        // Remove Ads Check
         McFairyAdsMediation.Instance.ShowIconAd(gameObject, SequenceIndex);
     }
 
-    public void HideIconAd()
+    void HideIconAd()
     {
+        // Remove Ads Check
         McFairyAdsMediation.Instance.HideIconAd(gameObject);
     }
 }

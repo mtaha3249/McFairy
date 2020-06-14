@@ -38,7 +38,7 @@ namespace McFairy.SO
 #endif
         #endregion
 
-        
+        public NetworkType.InitializiationType Init;
         public NetworkType.LogLevel logType;
         public string GameName;
         public string PackageName;

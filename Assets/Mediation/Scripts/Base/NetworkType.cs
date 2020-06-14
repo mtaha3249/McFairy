@@ -48,11 +48,24 @@ namespace McFairy.Base
             Full = 1
         }
 
+        public enum InitializiationType
+        {
+            Auto = 0,
+            OnDemad = 1
+        }
+
         [System.Serializable]
         public struct IconAd
         {
             public bool _enable;
             public Vector2 _size;
+        }
+
+        [System.Serializable]
+        public struct NativeAd
+        {
+            public bool _enable;
+            public EditableScript.NativeAdType sequence;
         }
 
         [System.Serializable]
@@ -70,6 +83,7 @@ namespace McFairy.Base
             public Interstitial interstitial;
             public Rewarded rewarded;
             public Banner banner;
+            public NativeAd nativeAd;
             public IconAd iconAd;
         }
 

@@ -30,6 +30,7 @@ namespace McFairy.Editor.SO
             EditorGUILayout.HelpBox("You must provide your ad ids and ad sequence here. Click Setting (top right corner) -> Visit Documentation to read more about McFairy Ad Mediation.", MessageType.Info);
 
             // initial parameters
+            EditorGUILayout.PropertyField(adTarget.FindProperty("Init"), new GUIContent("Initialization Type", "Way you want to Initialize Mediation"), true);
             EditorGUILayout.PropertyField(adTarget.FindProperty("logType"), new GUIContent("Log Level", "Log Visualization"), true);
             EditorGUILayout.PropertyField(adTarget.FindProperty("GameName"), new GUIContent("Game Name", "Name of game"), true);
             EditorGUILayout.PropertyField(adTarget.FindProperty("PackageName"), new GUIContent("Package Name", "Packagename of game"), true);

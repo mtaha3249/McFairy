@@ -12,6 +12,8 @@
         /// <summary>
         /// Load ad of ad network
         /// </summary>
+        /// <param name="bannerSize">Size of Banner</param>
+        /// <param name="bannerPosition">Position of Banner</param>
         public abstract void LoadAd(NetworkType.BannerSize bannerSize, NetworkType.BannerPosition bannerPosition);
 
         /// <summary>

@@ -50,10 +50,11 @@ namespace McFairy.Adpater.McFairyAds
             interstitial.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Button>().onClick.AddListener(() =>
             {
                 interstitial.SetActive(false);
-                McFairyAdsMediation.Instance.ShowBanner(McFairyAdsMediation.Instance.SceneId);
+                if (McFairyAdsMediation.Instance.ShowingBanner)
+                    McFairyAdsMediation.Instance.ShowBanner(McFairyAdsMediation.Instance.SceneId);
             });
             interstitial.SetActive(true);
             McFairyAdsMediation.Instance.HideBanner();
+        }
     }
-}
 }

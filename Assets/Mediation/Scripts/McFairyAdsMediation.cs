@@ -46,6 +46,11 @@ namespace McFairy
             }
         }
 
+        /// <summary>
+        /// McFairy Initialized value
+        /// </summary>
+        bool isInitialized = false;
+
         private void Awake()
         {
             if (Instance == null)
@@ -58,6 +63,14 @@ namespace McFairy
                 Destroy(gameObject);
             }
 
+            if (AdSequence.Instance.Init == NetworkType.InitializiationType.Auto)
+            {
+                Initialize();
+            }
+        }
+
+        public void Initialize()
+        {
             InitMcFairy();
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -75,8 +88,9 @@ namespace McFairy
                 InitializeAds(() =>
                 {
                     // as initiliazation of class is done
-                    RewardedBase.OnAdLoaded += OnAdLoaded; ;
+                    RewardedBase.OnAdLoaded += OnAdLoaded;
                     RewardedBase.OnAdCompleted = OnAdCompleted;
+                    isInitialized = true;
                 });
             });
             Logs.ShowLog("McFairy Initialized", LogType.Log);
@@ -122,6 +136,11 @@ namespace McFairy
                     NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].banner.sequence[y], initializedBannerAds, NetworkInitialization.bannerID);
                 }
                 NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].banner.failOver, initializedBannerAds, NetworkInitialization.bannerID);
+
+                // NativeAd Initalization
+                // iterate each scene
+                if (AdSequence.Instance.sequence[x].nativeAd._enable)
+                    NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].nativeAd.sequence, initializedNativeAds, NetworkInitialization.nativeID);
             }
 
             Logs.ShowLog("InitializeAds Initialized", LogType.Log);
@@ -139,6 +158,11 @@ namespace McFairy
         /// </summary>
         public void LoadAds()
         {
+            if (!isInitialized)
+            {
+                Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
+                return;
+            }
             // load all interstitial
             foreach (int adindex in initializedInterstitialAds)
             {
@@ -162,6 +186,11 @@ namespace McFairy
         /// <param name="sceneId">scene index identifier</param>
         public void ShowInterstitialAd(int sceneId)
         {
+            if (!isInitialized)
+            {
+                Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
+                return;
+            }
             InterstitialBase adNetwork;
             if (sceneId > AdSequence.Instance.sequence.Length - 1)
             {
@@ -196,6 +225,11 @@ namespace McFairy
         /// <param name="sceneId">scene index identifier</param>
         public void ShowRewardedAd(int sceneId)
         {
+            if (!isInitialized)
+            {
+                Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
+                return;
+            }
             RewardedBase adNetwork;
             if (sceneId > AdSequence.Instance.sequence.Length - 1)
             {
@@ -228,6 +262,14 @@ namespace McFairy
         /// banner ad network is out of function beacuse when we can cache ad of which ad network is showing so we can hide ad of only that ad network
         /// </summary>
         BannerBase bannerAdNetwork;
+        bool isShowingBanner;
+        public bool ShowingBanner
+        {
+            get
+            {
+                return isShowingBanner;
+            }
+        }
 
         /// <summary>
         /// Show Banner Ad base on availability
@@ -235,6 +277,11 @@ namespace McFairy
         /// <param name="sceneId">scene index identifier</param>
         public void ShowBanner(int sceneId)
         {
+            if (!isInitialized)
+            {
+                Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
+                return;
+            }
             if (sceneId > AdSequence.Instance.sequence.Length - 1)
             {
                 Logs.ShowLog("Scene Id is out of range", LogType.Error);
@@ -253,6 +300,9 @@ namespace McFairy
             bannerAdNetwork = NetworkInitialization.GetAdNetwork<EditableScript.BannerAdType, BannerBase>
                     (AdSequence.Instance.sequence[sceneId].banner.failOver);
             bannerAdNetwork.LoadAd(AdSequence.Instance.sequence[sceneId].banner.BannerSize, AdSequence.Instance.sequence[sceneId].banner.bannerPosition);
+
+            isShowingBanner = true;
+
             return;
         }
 
@@ -272,6 +322,11 @@ namespace McFairy
         /// <param name="sceneId">index of scene in which ad is shown</param>
         public void ShowIconAd(GameObject _icon, int sceneId)
         {
+            if (!isInitialized)
+            {
+                Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
+                return;
+            }
             if (sceneId > AdSequence.Instance.sequence.Length - 1)
             {
                 Logs.ShowLog("Scene Id is out of range", LogType.Error);
@@ -302,6 +357,49 @@ namespace McFairy
         public void HideIconAd(GameObject _icon)
         {
             _icon.SetActive(false);
+        }
+
+        /// <summary>
+        /// native adNetwork object to cache so when calling Hide its avaialaible
+        /// </summary>
+        NativeBase nativeAdNetwork;
+
+        /// <summary>
+        /// Show Native Ad
+        /// </summary>
+        /// <param name="sceneId">Scene Index</param>
+        /// <param name="registerObject">Native Ad Object/Parent</param>
+        /// <param name="adIcon">RawImage where ad is shown</param>
+        /// <param name="adChoices">Icon of Ad</param>
+        /// <param name="adHeadline">Title of Ad</param>
+        /// <param name="adCallToAction">On Click Text</param>
+        public void ShowNativeAd(int sceneId, GameObject registerObject, RawImage adIcon, RawImage adChoices, Text adHeadline, Text adCallToAction)
+        {
+            if (!isInitialized)
+            {
+                Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
+                return;
+            }
+            if (sceneId > AdSequence.Instance.sequence.Length - 1)
+            {
+                Logs.ShowLog("Scene Id is out of range", LogType.Error);
+                return;
+            }
+            if (!AdSequence.Instance.sequence[sceneId].nativeAd._enable)
+            {
+                return;
+            }
+            this.sceneId = sceneId;
+            nativeAdNetwork = NetworkInitialization.GetAdNetwork<EditableScript.NativeAdType, NativeBase>
+                   (AdSequence.Instance.sequence[sceneId].nativeAd.sequence);
+
+            nativeAdNetwork.LoadAd(registerObject, adIcon, adChoices, adHeadline, adCallToAction);
+        }
+
+        public void HideNativeAd()
+        {
+            if (nativeAdNetwork != null)
+                nativeAdNetwork.HideAd();
         }
     }
 }

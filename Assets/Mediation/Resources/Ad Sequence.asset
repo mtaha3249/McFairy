@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d913cf2e46b0a942bac8d4fafbe13a1, type: 3}
   m_Name: Ad Sequence
   m_EditorClassIdentifier: 
+  Init: 1
   logType: 1
   GameName: McFairy Ads
   PackageName: 
@@ -30,6 +31,9 @@ MonoBehaviour:
       bannerPosition: 0
       sequence: 14000000
       failOver: 21
+    nativeAd:
+      _enable: 1
+      sequence: 30
     iconAd:
       _enable: 1
       _size: {x: 200, y: 200}
@@ -46,12 +50,15 @@ MonoBehaviour:
       bannerPosition: 5
       sequence: 16000000
       failOver: 20
+    nativeAd:
+      _enable: 0
+      sequence: 0
     iconAd:
       _enable: 0
       _size: {x: 0, y: 0}
   - sceneName: 3
     interstitial:
-      sequence: 02000000
+      sequence: 03000000
       failOver: 1
     rewarded:
       sequence: 0c000000
@@ -62,9 +69,12 @@ MonoBehaviour:
       bannerPosition: 1
       sequence: 15000000
       failOver: 20
+    nativeAd:
+      _enable: 1
+      sequence: 30
     iconAd:
-      _enable: 0
-      _size: {x: 0, y: 0}
+      _enable: 1
+      _size: {x: 300, y: 300}
   adIds:
     admobIds:
       Interstitial: ca-app-pub-3940256099942544/1033173712
