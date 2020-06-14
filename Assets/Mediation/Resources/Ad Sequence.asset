@@ -30,6 +30,9 @@ MonoBehaviour:
       bannerPosition: 0
       sequence: 14000000
       failOver: 21
+    iconAd:
+      _enable: 1
+      _size: {x: 200, y: 200}
   - sceneName: 1
     interstitial:
       sequence: 01000000
@@ -39,10 +42,13 @@ MonoBehaviour:
       failOver: 10
     banner:
       Enable: 1
-      BannerSize: 1
+      BannerSize: 0
       bannerPosition: 5
       sequence: 16000000
       failOver: 20
+    iconAd:
+      _enable: 0
+      _size: {x: 0, y: 0}
   - sceneName: 3
     interstitial:
       sequence: 02000000
@@ -56,19 +62,24 @@ MonoBehaviour:
       bannerPosition: 1
       sequence: 15000000
       failOver: 20
+    iconAd:
+      _enable: 0
+      _size: {x: 0, y: 0}
   adIds:
     admobIds:
       Interstitial: ca-app-pub-3940256099942544/1033173712
       Banner: ca-app-pub-3940256099942544/6300978111
       RewardedVideo: ca-app-pub-3940256099942544/5224354917
       Native: ca-app-pub-3940256099942544/2247696110
-    facebookIds:
+    audienceNetworkIds:
       Interstitial: 2295292320706597_2295292590706570
       Banner: 2295292320706597_2295293444039818
       RewardedVideo: 2295292320706597_2820140891555068
-      Native: 2295292320706597_2295294677373028
     unityAdsIds:
       AppId: 2790170
       InterstitialPlacementID: video
       BannerPlacementID: banner
       RewardedPlacementID: rewardedVideo
+  _icon: {fileID: 21300000, guid: bad41b2208d5f314cbc4fcb247147188, type: 3}
+  _interstitial: {fileID: 21300000, guid: d39c204fe58acc7429a417f7a0b68c3f, type: 3}
+  _url: 

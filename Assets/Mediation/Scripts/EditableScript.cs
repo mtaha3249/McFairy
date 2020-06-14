@@ -12,75 +12,76 @@ namespace McFairy
         {
             Admob = 00,
             Unity = 01,
-            Facebook = 02,
-            Crosspromotion = 03
+            AudienceNetwork = 02,
+            McFairyAds = 03
         }
 
         public enum RewardedAdType
         {
             Admob = 10,
             Unity = 11,
-            Facebook = 12
+            AudienceNetwork = 12
         }
 
         public enum BannerAdType
         {
             Admob = 20,
             Unity = 21,
-            Facebook = 22
+            AudienceNetwork = 22
         }
 
         [Serializable]
         public struct AdIds
         {
             public AdmobIDs admobIds;
-            public FacebookIDs facebookIds;
+            public AudienceNetworkIDs audienceNetworkIds;
             public UnityAdsIDs unityAdsIds;
         }
 
         [Serializable]
-        public struct AdmobIDs
+        public class AdmobIDs
         {
-            public string Interstitial;
-            public string Banner;
-            public string RewardedVideo;
-            public string Native;
+            public string Interstitial = "ca-app-pub-3940256099942544/1033173712";
+            public string Banner = "ca-app-pub-3940256099942544/6300978111";
+            public string RewardedVideo = "ca-app-pub-3940256099942544/5224354917";
+            public string Native = "ca-app-pub-3940256099942544/2247696110";
         }
 
         [Serializable]
-        public struct FacebookIDs
+        public class AudienceNetworkIDs
         {
-            public string Interstitial;
-            public string Banner;
-            public string RewardedVideo;
-            public string Native;
+            public string Interstitial= "2295292320706597_2295292590706570";
+            public string Banner= "2295292320706597_2295293444039818";
+            public string RewardedVideo = "2295292320706597_2820140891555068";
         }
 
         [Serializable]
-        public struct UnityAdsIDs
+        public class UnityAdsIDs
         {
-            public string AppId;
-            public string InterstitialPlacementID;
-            public string BannerPlacementID;
-            public string RewardedPlacementID;
+            public string AppId = "2790170";
+            public string InterstitialPlacementID = "video";
+            public string BannerPlacementID = "banner";
+            public string RewardedPlacementID = "rewardedVideo";
         }
 
-        const string _namespace = "McFairy";
-        const string _namespaceAdapters = "Adpater";
-        const string _namespaceAdaptersAdmob = "Admob";
-        const string _namespaceAdaptersFacebook = "AudienceNetwork";
-        const string _namespaceAdaptersUnityAds = "UnityAds";
-        const string _admobInterstitialClassName = "AdmobInterstitial";
-        const string _facebookInterstitialClassName = "FacebookInterstitial";
-        const string _unityInterstitialClassName = "UnityInterstitial";
+        public const string _namespace = "McFairy";
+        public const string _namespaceAdapters = "Adpater";
+        public const string _namespaceAdaptersAdmob = "Admob";
+        public const string _namespaceAdaptersAudienceNetwork = "AudienceNetwork";
+        public const string _namespaceAdaptersUnityAds = "UnityAds";
+        public const string _namespaceAdaptersMcFairyAds = "McFairyAds";
+        public const string _admobInterstitialClassName = "AdmobInterstitial";
+        public const string _audienceNetworkInterstitialClassName = "AudienceNetworkInterstitial";
+        public const string _unityInterstitialClassName = "UnityInterstitial";
+        public const string _mcFairyAdsInterstitialClassName = "McFairyInterstitial";
 
-        const string _admobRewardedClassName = "AdmobRewarded";
-        const string _facebookRewardedClassName = "FacebookRewarded";
-        const string _unityAdsRewardedClassName = "UnityRewarded";
+        public const string _admobRewardedClassName = "AdmobRewarded";
+        public const string _audienceNetworkRewardedClassName = "AudienceNetworkRewarded";
+        public const string _unityAdsRewardedClassName = "UnityRewarded";
 
-        const string _admobBannerClassName = "AdmobBanner";
-        const string _unityBannerClassName = "UnityBanner";
-        const string _facebookBannerClassName = "FacebookBanner";
+        public const string _admobBannerClassName = "AdmobBanner";
+        public const string _unityBannerClassName = "UnityBanner";
+        public const string _audienceNetworkBannerClassName = "AudienceNetworkBanner";
 
         /// <summary>
         /// Initialize ad network object
@@ -94,22 +95,24 @@ namespace McFairy
             NetworkInitialization.dictionaryNetworks.Add((int)InterstitialAdType.Admob, Validator.validateScript<InterstitialBase>(_newnamespace, _admobInterstitialClassName));
             _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersUnityAds;
             NetworkInitialization.dictionaryNetworks.Add((int)InterstitialAdType.Unity, Validator.validateScript<InterstitialBase>(_newnamespace, _unityInterstitialClassName));
-            _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersFacebook;
-            NetworkInitialization.dictionaryNetworks.Add((int)InterstitialAdType.Facebook, Validator.validateScript<InterstitialBase>(_newnamespace, _facebookInterstitialClassName));
+            _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersAudienceNetwork;
+            NetworkInitialization.dictionaryNetworks.Add((int)InterstitialAdType.AudienceNetwork, Validator.validateScript<InterstitialBase>(_newnamespace, _audienceNetworkInterstitialClassName));
+            _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersMcFairyAds;
+            NetworkInitialization.dictionaryNetworks.Add((int)InterstitialAdType.McFairyAds, Validator.validateScript<InterstitialBase>(_newnamespace, _mcFairyAdsInterstitialClassName));
 
             // Rewarded Ad scripts finding and initialization
             _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersAdmob;
             NetworkInitialization.dictionaryNetworks.Add((int)RewardedAdType.Admob, Validator.validateScript<RewardedBase>(_newnamespace, _admobRewardedClassName));
-            _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersFacebook;
-            NetworkInitialization.dictionaryNetworks.Add((int)RewardedAdType.Facebook, Validator.validateScript<RewardedBase>(_newnamespace, _facebookRewardedClassName));
+            _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersAudienceNetwork;
+            NetworkInitialization.dictionaryNetworks.Add((int)RewardedAdType.AudienceNetwork, Validator.validateScript<RewardedBase>(_newnamespace, _audienceNetworkRewardedClassName));
             _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersUnityAds;
             NetworkInitialization.dictionaryNetworks.Add((int)RewardedAdType.Unity, Validator.validateScript<RewardedBase>(_newnamespace, _unityAdsRewardedClassName));
 
             // Banner Ad scripts finding and initialization
             _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersAdmob;
             NetworkInitialization.dictionaryNetworks.Add((int)BannerAdType.Admob, Validator.validateScript<BannerBase>(_newnamespace, _admobBannerClassName));
-            _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersFacebook;
-            NetworkInitialization.dictionaryNetworks.Add((int)BannerAdType.Facebook, Validator.validateScript<BannerBase>(_newnamespace, _facebookBannerClassName));
+            _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersAudienceNetwork;
+            NetworkInitialization.dictionaryNetworks.Add((int)BannerAdType.AudienceNetwork, Validator.validateScript<BannerBase>(_newnamespace, _audienceNetworkBannerClassName));
             _newnamespace = _namespace + "." + _namespaceAdapters + "." + _namespaceAdaptersUnityAds;
             NetworkInitialization.dictionaryNetworks.Add((int)BannerAdType.Unity, Validator.validateScript<BannerBase>(_newnamespace, _unityBannerClassName));
 
@@ -145,11 +148,11 @@ namespace McFairy
                 case 02:
                     // Interstitial
                     // Facebook
-                    id = AdSequence.Instance.adIds.facebookIds.Interstitial;
+                    id = AdSequence.Instance.adIds.audienceNetworkIds.Interstitial;
                     break;
                 case 03:
                     // Interstitial
-                    // Crosspromotion
+                    // McFairy Ads
                     break;
                 case 10:
                     // Rewarded
@@ -164,7 +167,7 @@ namespace McFairy
                 case 12:
                     // Rewarded
                     // Facebook
-                    id = AdSequence.Instance.adIds.facebookIds.RewardedVideo;
+                    id = AdSequence.Instance.adIds.audienceNetworkIds.RewardedVideo;
                     break;
                 case 20:
                     // Banner
@@ -179,7 +182,7 @@ namespace McFairy
                 case 22:
                     // Banner
                     // Facebook
-                    id = AdSequence.Instance.adIds.facebookIds.Banner;
+                    id = AdSequence.Instance.adIds.audienceNetworkIds.Banner;
                     break;
             }
             return id;
@@ -213,7 +216,7 @@ namespace McFairy
                     break;
                 case 03:
                     // Interstitial
-                    // Crosspromotion
+                    // McFairy Ads
                     break;
                 case 10:
                     // Rewarded

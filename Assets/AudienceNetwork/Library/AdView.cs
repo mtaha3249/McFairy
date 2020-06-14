@@ -237,6 +237,37 @@ namespace AudienceNetwork
             return 0;
         }
 
+        // McFairy Added Function
+        public bool ShowAd(AdPosition position, double width, double xposition)
+        {
+            double y = 0; // default y-asix to 0
+            switch (position)
+            {
+                case AdPosition.TOP:
+                    {
+                        break;
+                    }
+                case AdPosition.BOTTOM:
+                    {
+                        y = AdUtility.Height() - AdView.HeightFromType(this, size);
+                        break;
+                    }
+                case AdPosition.CUSTOM:
+                    {
+                        Debug.LogWarning("Use Show(double y) instead");
+                        break;
+                    }
+            }
+            return Show(xposition, y, width);
+        }
+
+        // McFairy Added Function
+        public bool Show(double x,
+                         double y, double width)
+        {
+            return Show(x, y, width, AdView.HeightFromType(this, size));
+        }
+
         public bool Show(AdPosition position)
         {
             double y = 0; // default y-asix to 0
@@ -454,9 +485,12 @@ namespace AudienceNetwork
         {
             AdViewContainer adViewContainer = null;
             bool success = AdViewBridgeAndroid.adViews.TryGetValue(uniqueId, out adViewContainer);
-            if (success) {
+            if (success)
+            {
                 return adViewContainer.bridgedAdView;
-            } else {
+            }
+            else
+            {
                 return null;
             }
         }
@@ -465,9 +499,12 @@ namespace AudienceNetwork
                                             string method)
         {
             AndroidJavaObject adView = AdViewForAdViewId(uniqueId);
-            if (adView != null) {
-                return adView.Call<string> (method);
-            } else {
+            if (adView != null)
+            {
+                return adView.Call<string>(method);
+            }
+            else
+            {
                 return null;
             }
         }
@@ -476,10 +513,12 @@ namespace AudienceNetwork
                                               string method)
         {
             AndroidJavaObject adView = AdViewForAdViewId(uniqueId);
-            if (adView != null) {
-                AndroidJavaObject image = adView.Call<AndroidJavaObject> (method);
-                if (image != null) {
-                    return image.Call<string> ("getUrl");
+            if (adView != null)
+            {
+                AndroidJavaObject image = adView.Call<AndroidJavaObject>(method);
+                if (image != null)
+                {
+                    return image.Call<string>("getUrl");
                 }
             }
             return null;
@@ -489,16 +528,17 @@ namespace AudienceNetwork
         {
             AndroidJavaObject retValue = null;
             AndroidJavaClass sizeEnum = new AndroidJavaClass("com.facebook.ads.AdSize");
-            switch (size) {
-            case AdSize.BANNER_HEIGHT_50:
-                retValue = sizeEnum.GetStatic<AndroidJavaObject>("BANNER_HEIGHT_50");
-                break;
-            case AdSize.BANNER_HEIGHT_90:
-                retValue = sizeEnum.GetStatic<AndroidJavaObject>("BANNER_HEIGHT_90");
-                break;
-            case AdSize.RECTANGLE_HEIGHT_250:
-                retValue = sizeEnum.GetStatic<AndroidJavaObject>("RECTANGLE_HEIGHT_250");
-                break;
+            switch (size)
+            {
+                case AdSize.BANNER_HEIGHT_50:
+                    retValue = sizeEnum.GetStatic<AndroidJavaObject>("BANNER_HEIGHT_50");
+                    break;
+                case AdSize.BANNER_HEIGHT_90:
+                    retValue = sizeEnum.GetStatic<AndroidJavaObject>("BANNER_HEIGHT_90");
+                    break;
+                case AdSize.RECTANGLE_HEIGHT_250:
+                    retValue = sizeEnum.GetStatic<AndroidJavaObject>("RECTANGLE_HEIGHT_250");
+                    break;
             }
             return retValue;
         }
@@ -536,7 +576,8 @@ namespace AudienceNetwork
         {
             AdUtility.Prepare();
             AndroidJavaObject adView = AdViewForAdViewId(uniqueId);
-            if (adView != null) {
+            if (adView != null)
+            {
                 adView.Call("loadAd");
             }
             return uniqueId;
@@ -573,31 +614,37 @@ namespace AudienceNetwork
                                   double height)
         {
             AndroidJavaObject adView = AdViewForAdViewId(uniqueId);
-            if (adView == null) {
+            if (adView == null)
+            {
                 return false;
             }
             AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            activity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
+            activity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+            {
                 AndroidJavaObject context = activity.Call<AndroidJavaObject>("getApplicationContext");
-                AndroidJavaObject resources = context.Call<AndroidJavaObject> ("getResources");
+                AndroidJavaObject resources = context.Call<AndroidJavaObject>("getResources");
                 AndroidJavaObject displayMetrics =
-                    resources.Call<AndroidJavaObject> ("getDisplayMetrics");
-                float density = displayMetrics.Get<float> ("density");
+                    resources.Call<AndroidJavaObject>("getDisplayMetrics");
+                float density = displayMetrics.Get<float>("density");
 
                 AndroidJavaObject layoutParams = new AndroidJavaObject("android.widget.LinearLayout$LayoutParams",
                         (int)(width * density),
                         (int)(height * density));
                 AndroidJavaObject linearLayout = new AndroidJavaObject("android.widget.LinearLayout", activity);
                 AndroidJavaClass R = new AndroidJavaClass("android.R$id");
-                AndroidJavaObject view = activity.Call<AndroidJavaObject> ("findViewById", R.GetStatic<int> ("content"));
+                AndroidJavaObject view = activity.Call<AndroidJavaObject>("findViewById", R.GetStatic<int>("content"));
 
-                AndroidJavaObject parent  = adView.Call<AndroidJavaObject>("getParent");
-                if (parent != null) {
+                AndroidJavaObject parent = adView.Call<AndroidJavaObject>("getParent");
+                if (parent != null)
+                {
                     IntPtr ptr = AndroidJNI.GetMethodID(parent.GetRawClass(), "removeView", "(Landroid/view/View;)V");
-                    if (ptr != IntPtr.Zero) {
+                    if (ptr != IntPtr.Zero)
+                    {
                         parent.Call("removeView", adView);
-                    } else {
+                    }
+                    else
+                    {
                         AndroidJNI.ExceptionClear();
                     }
                 }
@@ -622,7 +669,8 @@ namespace AudienceNetwork
         public override void DisableAutoRefresh(int uniqueId)
         {
             AndroidJavaObject adView = AdViewForAdViewId(uniqueId);
-            if (adView != null) {
+            if (adView != null)
+            {
                 adView.Call("disableAutoRefresh");
             }
         }
@@ -634,25 +682,32 @@ namespace AudienceNetwork
             .GetStatic<AndroidJavaObject>("currentActivity");
             AndroidJavaObject adView = AdViewForAdViewId(uniqueId);
             AdViewBridgeAndroid.adViews.Remove(uniqueId);
-            if (adView != null) {
-                activity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
+            if (adView != null)
+            {
+                activity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+                {
                     adView.Call("destroy");
-                    AndroidJavaObject parent = adView.Call<AndroidJavaObject> ("getParent");
+                    AndroidJavaObject parent = adView.Call<AndroidJavaObject>("getParent");
                     parent.Call("removeView", adView);
                 }));
             }
         }
 
         public override void OnLoad(int uniqueId,
-                                    FBAdViewBridgeCallback callback) {}
+                                    FBAdViewBridgeCallback callback)
+        { }
         public override void OnImpression(int uniqueId,
-                                          FBAdViewBridgeCallback callback) {}
+                                          FBAdViewBridgeCallback callback)
+        { }
         public override void OnClick(int uniqueId,
-                                     FBAdViewBridgeCallback callback) {}
+                                     FBAdViewBridgeCallback callback)
+        { }
         public override void OnError(int uniqueId,
-                                     FBAdViewBridgeErrorCallback callback) {}
+                                     FBAdViewBridgeErrorCallback callback)
+        { }
         public override void OnFinishedClick(int uniqueId,
-                                             FBAdViewBridgeCallback callback) {}
+                                             FBAdViewBridgeCallback callback)
+        { }
 
     }
 
@@ -967,9 +1022,11 @@ namespace AudienceNetwork
         void onError(AndroidJavaObject ad,
                      AndroidJavaObject error)
         {
-            string errorMessage = error.Call<string> ("getErrorMessage");
-            if (adView.AdViewDidFailWithError != null) {
-                adView.ExecuteOnMainThread(() => {
+            string errorMessage = error.Call<string>("getErrorMessage");
+            if (adView.AdViewDidFailWithError != null)
+            {
+                adView.ExecuteOnMainThread(() =>
+                {
                     adView.AdViewDidFailWithError(errorMessage);
                 });
             }
@@ -982,8 +1039,10 @@ namespace AudienceNetwork
 
         void onAdClicked(AndroidJavaObject ad)
         {
-            if (adView.AdViewDidClick != null) {
-                adView.ExecuteOnMainThread(() => {
+            if (adView.AdViewDidClick != null)
+            {
+                adView.ExecuteOnMainThread(() =>
+                {
                     adView.AdViewDidClick();
                 });
             }
@@ -991,8 +1050,10 @@ namespace AudienceNetwork
 
         void onLoggingImpression(AndroidJavaObject ad)
         {
-            if (adView.AdViewWillLogImpression != null) {
-                adView.ExecuteOnMainThread(() => {
+            if (adView.AdViewWillLogImpression != null)
+            {
+                adView.ExecuteOnMainThread(() =>
+                {
                     adView.AdViewWillLogImpression();
                 });
             }

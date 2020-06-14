@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace McFairy.Base
 {
@@ -40,6 +41,25 @@ namespace McFairy.Base
             else
             {
                 return default(T);
+            }
+        }
+
+        /// <summary>
+        /// validate a script exists
+        /// </summary>
+        /// <param name="_namespace">namespace in which script lie</param>
+        /// <param name="_classname">classname to validate</param>
+        /// <returns>true if found else false</returns>
+        public static bool validateScript(string _namespace, string _classname)
+        {
+            var myClassType = Type.GetType(string.Format("{0}.{1}", _namespace, _classname));
+            if (myClassType != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

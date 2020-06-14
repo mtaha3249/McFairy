@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace McFairy.Base
 {
@@ -47,6 +48,21 @@ namespace McFairy.Base
             Full = 1
         }
 
+        [System.Serializable]
+        public struct IconAd
+        {
+            public bool _enable;
+            public Vector2 _size;
+        }
+
+        [System.Serializable]
+        public struct McFairy
+        {
+            public GameObject Interstitial;
+            [Tooltip("Only used when useServerConfig == true.")]
+            public bool isLoaded;
+        }
+
         [Serializable]
         public struct SceneSequence
         {
@@ -54,6 +70,7 @@ namespace McFairy.Base
             public Interstitial interstitial;
             public Rewarded rewarded;
             public Banner banner;
+            public IconAd iconAd;
         }
 
         [Serializable]

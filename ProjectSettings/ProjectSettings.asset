@@ -648,7 +648,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: USES_BILLING
     4: USES_BILLING
-    7: USES_BILLING
+    7: USES_BILLING;MCFAIRY
     14: USES_BILLING
   platformArchitecture: {}
   scriptingBackend: {}
