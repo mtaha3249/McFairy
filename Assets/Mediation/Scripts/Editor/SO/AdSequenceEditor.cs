@@ -8,12 +8,13 @@ namespace McFairy.Editor.SO
     public class AdSequenceEditor : UnityEditor.Editor
     {
         bool adNetworksLinks = false;
-        bool validationAdmob, validationAudienceNetwork, validationUnity;
+        bool validationAdmob, validationAudienceNetwork, validationUnity, validationMcFairy;
 
         const string PlayServicesResolver = "https://github.com/googlesamples/unity-jar-resolver/blob/master/external-dependency-manager-latest.unitypackage";
-        const string AdmobAdapter = "https://github.com/googlesamples/unity-jar-resolver/blob/master/external-dependency-manager-latest.unitypackage";
-        const string AudienceNetworkAdapter = "https://github.com/googlesamples/unity-jar-resolver/blob/master/external-dependency-manager-latest.unitypackage";
-        const string UnityAdapter = "https://github.com/googlesamples/unity-jar-resolver/blob/master/external-dependency-manager-latest.unitypackage";
+        const string AdmobAdapter = "https://drive.google.com/file/d/1gqiu2n4llU6YCHpDr-EHcrMpVv7ApQuW/view?usp=sharing";
+        const string AudienceNetworkAdapter = "https://drive.google.com/file/d/1ZZMjVuqI2CjETk7SyZKPhYaQhicj21Wv/view?usp=sharing";
+        const string UnityAdapter = "https://drive.google.com/file/d/1EvG9ck3eDPu2fE_Umjf-chCKYubyL4XZ/view?usp=sharing";
+        const string McFairyAdsAdapter = "https://drive.google.com/file/d/12TL2U9dCWyRbK_yVxsfgrjCKLdH20Tbd/view?usp=sharing";
 
         SerializedProperty adIds;
         SerializedObject adTarget;
@@ -35,6 +36,7 @@ namespace McFairy.Editor.SO
             EditorGUILayout.PropertyField(adTarget.FindProperty("GameName"), new GUIContent("Game Name", "Name of game"), true);
             EditorGUILayout.PropertyField(adTarget.FindProperty("PackageName"), new GUIContent("Package Name", "Packagename of game"), true);
             EditorGUILayout.PropertyField(adTarget.FindProperty("platform"), new GUIContent("Platform", "Launching platform"), true);
+            EditorGUILayout.PropertyField(adTarget.FindProperty("hideAds"), new GUIContent("Hide All Ads", "Toogle for Hide Ads"), true);
 
             // layout styling
             var guiMessageStyle = new GUIStyle(GUI.skin.label);
@@ -60,11 +62,11 @@ namespace McFairy.Editor.SO
             EditorGUILayout.LabelField("Ad Ids", guiMessageStyle);
 
             // warning or error for object validation ADMOB
-            if (!validationAdmob && scriptTarget.validateSequence(EditableScript.InterstitialAdType.Admob))
+            if (!validationAdmob && scriptTarget.validateSequence(McFairyAdsData.InterstitialAdType.Admob))
             {
                 EditorGUILayout.HelpBox("Admob adapter is not imported but using Admob in sequence.", MessageType.Error);
             }
-            else if (!validationAdmob && !scriptTarget.validateSequence(EditableScript.InterstitialAdType.Admob))
+            else if (!validationAdmob && !scriptTarget.validateSequence(McFairyAdsData.InterstitialAdType.Admob))
             {
                 EditorGUILayout.HelpBox("Admob adapter is missing.", MessageType.Warning);
             }
@@ -78,11 +80,11 @@ namespace McFairy.Editor.SO
 
             GUI.enabled = true;
             // warning or error for object validation Audience Network
-            if (!validationAudienceNetwork && scriptTarget.validateSequence(EditableScript.InterstitialAdType.AudienceNetwork))
+            if (!validationAudienceNetwork && scriptTarget.validateSequence(McFairyAdsData.InterstitialAdType.AudienceNetwork))
             {
                 EditorGUILayout.HelpBox("Audience Network adapter is not imported but using Audience Network in sequence.", MessageType.Error);
             }
-            else if (!validationAudienceNetwork && !scriptTarget.validateSequence(EditableScript.InterstitialAdType.AudienceNetwork))
+            else if (!validationAudienceNetwork && !scriptTarget.validateSequence(McFairyAdsData.InterstitialAdType.AudienceNetwork))
             {
                 EditorGUILayout.HelpBox("Audience Network adapter is missing.", MessageType.Warning);
             }
@@ -96,11 +98,11 @@ namespace McFairy.Editor.SO
 
             GUI.enabled = true;
             // warning or error for object validation Unity Ads
-            if (!validationUnity && scriptTarget.validateSequence(EditableScript.InterstitialAdType.Unity))
+            if (!validationUnity && scriptTarget.validateSequence(McFairyAdsData.InterstitialAdType.Unity))
             {
                 EditorGUILayout.HelpBox("Unity Ads adapter is not imported but using Unity Ads in sequence.", MessageType.Error);
             }
-            else if (!validationUnity && !scriptTarget.validateSequence(EditableScript.InterstitialAdType.Unity))
+            else if (!validationUnity && !scriptTarget.validateSequence(McFairyAdsData.InterstitialAdType.Unity))
             {
                 EditorGUILayout.HelpBox("Unity Ads adapter is missing.", MessageType.Warning);
             }
@@ -118,7 +120,7 @@ namespace McFairy.Editor.SO
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("McFairy Ads", guiMessageStyle);
             // warning or error for object validation Unity Ads
-            if (!AdSequence.Instance._interstitial && scriptTarget.validateSequence(EditableScript.InterstitialAdType.McFairyAds))
+            if (!AdSequence.Instance._interstitial && scriptTarget.validateSequence(McFairyAdsData.InterstitialAdType.McFairyAds))
             {
                 EditorGUILayout.HelpBox("McFairy Interstitial sprites not defined but using McFairy Ads in sequence.", MessageType.Error);
             }
@@ -152,25 +154,35 @@ namespace McFairy.Editor.SO
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(15);
                 GUI.enabled = !validationAdmob;
-                if (GUILayout.Button("Admob"))
+                if (GUILayout.Button("Admob", GUILayout.MinWidth(100f), GUILayout.ExpandWidth(true)))
                 {
                     scriptTarget.OpenUrl(AdmobAdapter);
                 }
                 GUI.enabled = validationAdmob;
 
                 GUI.enabled = !validationAudienceNetwork;
-                if (GUILayout.Button("Audience Network"))
+                if (GUILayout.Button("Audience Network", GUILayout.MinWidth(100f), GUILayout.ExpandWidth(true)))
                 {
                     scriptTarget.OpenUrl(AudienceNetworkAdapter);
                 }
                 GUI.enabled = validationAudienceNetwork;
+                EditorGUILayout.EndHorizontal();
 
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Space(15);
                 GUI.enabled = !validationUnity;
-                if (GUILayout.Button("Unity Ads"))
+                if (GUILayout.Button("Unity Ads", GUILayout.MinWidth(100f), GUILayout.ExpandWidth(true)))
                 {
                     scriptTarget.OpenUrl(UnityAdapter);
                 }
                 GUI.enabled = validationUnity;
+
+                GUI.enabled = !validationMcFairy;
+                if (GUILayout.Button("McFairy Ads", GUILayout.MinWidth(100f), GUILayout.ExpandWidth(true)))
+                {
+                    scriptTarget.OpenUrl(McFairyAdsAdapter);
+                }
+                GUI.enabled = validationMcFairy;
 
                 EditorGUILayout.EndHorizontal();
 
@@ -203,6 +215,7 @@ namespace McFairy.Editor.SO
             validationAdmob = scriptTarget.ValidateAdmob();
             validationAudienceNetwork = scriptTarget.ValidateAudienceNetwork();
             validationUnity = scriptTarget.ValidateUnityAds();
+            validationMcFairy = scriptTarget.ValidateMcFairy();
         }
     }
 }

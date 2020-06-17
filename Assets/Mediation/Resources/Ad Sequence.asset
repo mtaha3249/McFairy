@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d913cf2e46b0a942bac8d4fafbe13a1, type: 3}
   m_Name: Ad Sequence
   m_EditorClassIdentifier: 
+  hideAds: 1
   Init: 1
   logType: 1
   GameName: McFairy Ads

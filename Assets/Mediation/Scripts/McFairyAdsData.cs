@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace McFairy
 {
-    public class EditableScript
+    public class McFairyAdsData
     {
         public enum InterstitialAdType
         {

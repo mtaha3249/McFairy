@@ -65,7 +65,7 @@ namespace McFairy.Base
         public struct NativeAd
         {
             public bool _enable;
-            public EditableScript.NativeAdType sequence;
+            public McFairyAdsData.NativeAdType sequence;
         }
 
         [System.Serializable]
@@ -90,15 +90,15 @@ namespace McFairy.Base
         [Serializable]
         public struct Interstitial
         {
-            public EditableScript.InterstitialAdType[] sequence;
-            public EditableScript.InterstitialAdType failOver;
+            public McFairyAdsData.InterstitialAdType[] sequence;
+            public McFairyAdsData.InterstitialAdType failOver;
         }
 
         [Serializable]
         public struct Rewarded
         {
-            public EditableScript.RewardedAdType[] sequence;
-            public EditableScript.RewardedAdType failOver;
+            public McFairyAdsData.RewardedAdType[] sequence;
+            public McFairyAdsData.RewardedAdType failOver;
         }
 
         [Serializable]
@@ -107,8 +107,8 @@ namespace McFairy.Base
             public bool Enable;
             public BannerSize BannerSize;
             public BannerPosition bannerPosition;
-            public EditableScript.BannerAdType[] sequence;
-            public EditableScript.BannerAdType failOver;
+            public McFairyAdsData.BannerAdType[] sequence;
+            public McFairyAdsData.BannerAdType failOver;
         }
     }
 }

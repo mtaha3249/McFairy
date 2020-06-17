@@ -71,6 +71,8 @@ namespace McFairy
 
         public void Initialize()
         {
+            if (AdSequence.Instance.hideAds)
+                return;
             InitMcFairy();
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -82,7 +84,7 @@ namespace McFairy
 
         private void InitMcFairy()
         {
-            EditableScript.InitializeAdNetworks(() =>
+            McFairyAdsData.InitializeAdNetworks(() =>
             {
                 // scripts validated and checked which are in the project
                 InitializeAds(() =>
@@ -158,6 +160,9 @@ namespace McFairy
         /// </summary>
         public void LoadAds()
         {
+            if (AdSequence.Instance.hideAds)
+                return;
+
             if (!isInitialized)
             {
                 Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
@@ -166,16 +171,16 @@ namespace McFairy
             // load all interstitial
             foreach (int adindex in initializedInterstitialAds)
             {
-                InterstitialBase adNetwork = NetworkInitialization.GetAdNetwork<EditableScript.InterstitialAdType, InterstitialBase>
-                    ((EditableScript.InterstitialAdType)adindex);
+                InterstitialBase adNetwork = NetworkInitialization.GetAdNetwork<McFairyAdsData.InterstitialAdType, InterstitialBase>
+                    ((McFairyAdsData.InterstitialAdType)adindex);
                 adNetwork.LoadAd();
             }
 
             // load all rewarded
             foreach (int adindex in initializedRewardedAds)
             {
-                RewardedBase adNetwork = NetworkInitialization.GetAdNetwork<EditableScript.RewardedAdType, RewardedBase>
-                    ((EditableScript.RewardedAdType)adindex);
+                RewardedBase adNetwork = NetworkInitialization.GetAdNetwork<McFairyAdsData.RewardedAdType, RewardedBase>
+                    ((McFairyAdsData.RewardedAdType)adindex);
                 adNetwork.LoadAd();
             }
         }
@@ -186,6 +191,9 @@ namespace McFairy
         /// <param name="sceneId">scene index identifier</param>
         public void ShowInterstitialAd(int sceneId)
         {
+            if (AdSequence.Instance.hideAds)
+                return;
+
             if (!isInitialized)
             {
                 Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
@@ -201,7 +209,7 @@ namespace McFairy
             // running sequence
             for (int y = 0; y < AdSequence.Instance.sequence[sceneId].interstitial.sequence.Length; y++)
             {
-                adNetwork = NetworkInitialization.GetAdNetwork<EditableScript.InterstitialAdType, InterstitialBase>
+                adNetwork = NetworkInitialization.GetAdNetwork<McFairyAdsData.InterstitialAdType, InterstitialBase>
                     (AdSequence.Instance.sequence[sceneId].interstitial.sequence[y]);
                 if (adNetwork.isAdLoaded())
                 {
@@ -210,7 +218,7 @@ namespace McFairy
                 }
             }
             //running failover
-            adNetwork = NetworkInitialization.GetAdNetwork<EditableScript.InterstitialAdType, InterstitialBase>
+            adNetwork = NetworkInitialization.GetAdNetwork<McFairyAdsData.InterstitialAdType, InterstitialBase>
                 (AdSequence.Instance.sequence[sceneId].interstitial.failOver);
             if (adNetwork.isAdLoaded())
             {
@@ -225,6 +233,9 @@ namespace McFairy
         /// <param name="sceneId">scene index identifier</param>
         public void ShowRewardedAd(int sceneId)
         {
+            if (AdSequence.Instance.hideAds)
+                return;
+
             if (!isInitialized)
             {
                 Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
@@ -240,7 +251,7 @@ namespace McFairy
             // running sequence
             for (int y = 0; y < AdSequence.Instance.sequence[sceneId].rewarded.sequence.Length; y++)
             {
-                adNetwork = NetworkInitialization.GetAdNetwork<EditableScript.RewardedAdType, RewardedBase>
+                adNetwork = NetworkInitialization.GetAdNetwork<McFairyAdsData.RewardedAdType, RewardedBase>
                     (AdSequence.Instance.sequence[sceneId].rewarded.sequence[y]);
                 if (adNetwork.isAdLoaded())
                 {
@@ -249,7 +260,7 @@ namespace McFairy
                 }
             }
             //running failover
-            adNetwork = NetworkInitialization.GetAdNetwork<EditableScript.RewardedAdType, RewardedBase>
+            adNetwork = NetworkInitialization.GetAdNetwork<McFairyAdsData.RewardedAdType, RewardedBase>
                 (AdSequence.Instance.sequence[sceneId].rewarded.failOver);
             if (adNetwork.isAdLoaded())
             {
@@ -277,6 +288,9 @@ namespace McFairy
         /// <param name="sceneId">scene index identifier</param>
         public void ShowBanner(int sceneId)
         {
+            if (AdSequence.Instance.hideAds)
+                return;
+
             if (!isInitialized)
             {
                 Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
@@ -291,13 +305,13 @@ namespace McFairy
             // running sequence
             for (int y = 0; y < AdSequence.Instance.sequence[sceneId].banner.sequence.Length; y++)
             {
-                bannerAdNetwork = NetworkInitialization.GetAdNetwork<EditableScript.BannerAdType, BannerBase>
+                bannerAdNetwork = NetworkInitialization.GetAdNetwork<McFairyAdsData.BannerAdType, BannerBase>
                     (AdSequence.Instance.sequence[sceneId].banner.sequence[y]);
                 bannerAdNetwork.LoadAd(AdSequence.Instance.sequence[sceneId].banner.BannerSize, AdSequence.Instance.sequence[sceneId].banner.bannerPosition);
                 return;
             }
             //running failover
-            bannerAdNetwork = NetworkInitialization.GetAdNetwork<EditableScript.BannerAdType, BannerBase>
+            bannerAdNetwork = NetworkInitialization.GetAdNetwork<McFairyAdsData.BannerAdType, BannerBase>
                     (AdSequence.Instance.sequence[sceneId].banner.failOver);
             bannerAdNetwork.LoadAd(AdSequence.Instance.sequence[sceneId].banner.BannerSize, AdSequence.Instance.sequence[sceneId].banner.bannerPosition);
 
@@ -311,6 +325,9 @@ namespace McFairy
         /// </summary>
         public void HideBanner()
         {
+            if (AdSequence.Instance.hideAds)
+                return;
+
             if (bannerAdNetwork != null)
                 bannerAdNetwork.HideAd();
         }
@@ -322,6 +339,9 @@ namespace McFairy
         /// <param name="sceneId">index of scene in which ad is shown</param>
         public void ShowIconAd(GameObject _icon, int sceneId)
         {
+            if (AdSequence.Instance.hideAds)
+                return;
+
             if (!isInitialized)
             {
                 Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
@@ -356,6 +376,9 @@ namespace McFairy
         /// <param name="_icon">registered gameobject</param>
         public void HideIconAd(GameObject _icon)
         {
+            if (AdSequence.Instance.hideAds)
+                return;
+
             _icon.SetActive(false);
         }
 
@@ -375,6 +398,9 @@ namespace McFairy
         /// <param name="adCallToAction">On Click Text</param>
         public void ShowNativeAd(int sceneId, GameObject registerObject, RawImage adIcon, RawImage adChoices, Text adHeadline, Text adCallToAction)
         {
+            if (AdSequence.Instance.hideAds)
+                return;
+
             if (!isInitialized)
             {
                 Debug.LogError("McFairy is not Initialize. Call Initialize Method first");
@@ -390,7 +416,7 @@ namespace McFairy
                 return;
             }
             this.sceneId = sceneId;
-            nativeAdNetwork = NetworkInitialization.GetAdNetwork<EditableScript.NativeAdType, NativeBase>
+            nativeAdNetwork = NetworkInitialization.GetAdNetwork<McFairyAdsData.NativeAdType, NativeBase>
                    (AdSequence.Instance.sequence[sceneId].nativeAd.sequence);
 
             nativeAdNetwork.LoadAd(registerObject, adIcon, adChoices, adHeadline, adCallToAction);
@@ -398,6 +424,9 @@ namespace McFairy
 
         public void HideNativeAd()
         {
+            if (AdSequence.Instance.hideAds)
+                return;
+
             if (nativeAdNetwork != null)
                 nativeAdNetwork.HideAd();
         }

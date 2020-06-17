@@ -8,7 +8,7 @@ namespace McFairy.SO
 {
     [CreateAssetMenu(fileName = "Ad Data", menuName = "McFairy/Create Ad Data", order = 1)]
 #if UNITY_EDITOR
-    [HelpURL("https://sites.google.com/view/mtahabinfarooq")]
+    [HelpURL("https://drive.google.com/file/d/17J3IOYR0NKAwjmS-McuCo6uEBAnDj20U/view?usp=sharing")]
 #endif
     public class AdSequence : ScriptableObject
     {
@@ -38,19 +38,22 @@ namespace McFairy.SO
 #endif
         #endregion
 
+        public bool hideAds;
         public NetworkType.InitializiationType Init;
         public NetworkType.LogLevel logType;
         public string GameName;
         public string PackageName;
         public NetworkType.Platforms platform;
         public NetworkType.SceneSequence[] sequence;
-        public EditableScript.AdIds adIds;
+        public McFairyAdsData.AdIds adIds;
 
         public Sprite _icon;
         public Sprite _interstitial;
+
+
         public string _url;
 
-        private const string docUrl = "";
+        private const string docUrl = "https://drive.google.com/file/d/17J3IOYR0NKAwjmS-McuCo6uEBAnDj20U/view?usp=sharing";
 
         #region External Calls
         public void OpenUrl(string url)
@@ -66,20 +69,25 @@ namespace McFairy.SO
 
         public bool ValidateAdmob()
         {
-            return Validator.validateScript(EditableScript._namespace + "." + EditableScript._namespaceAdapters + "." + EditableScript._namespaceAdaptersAdmob, EditableScript._admobInterstitialClassName);
+            return Validator.validateScript(McFairyAdsData._namespace + "." + McFairyAdsData._namespaceAdapters + "." + McFairyAdsData._namespaceAdaptersAdmob, McFairyAdsData._admobInterstitialClassName);
         }
 
         public bool ValidateAudienceNetwork()
         {
-            return Validator.validateScript(EditableScript._namespace + "." + EditableScript._namespaceAdapters + "." + EditableScript._namespaceAdaptersAudienceNetwork, EditableScript._audienceNetworkInterstitialClassName);
+            return Validator.validateScript(McFairyAdsData._namespace + "." + McFairyAdsData._namespaceAdapters + "." + McFairyAdsData._namespaceAdaptersAudienceNetwork, McFairyAdsData._audienceNetworkInterstitialClassName);
         }
 
         public bool ValidateUnityAds()
         {
-            return Validator.validateScript(EditableScript._namespace + "." + EditableScript._namespaceAdapters + "." + EditableScript._namespaceAdaptersUnityAds, EditableScript._unityInterstitialClassName);
+            return Validator.validateScript(McFairyAdsData._namespace + "." + McFairyAdsData._namespaceAdapters + "." + McFairyAdsData._namespaceAdaptersUnityAds, McFairyAdsData._unityInterstitialClassName);
         }
 
-        public bool validateSequence(EditableScript.InterstitialAdType interstitialAdType)
+        public bool ValidateMcFairy()
+        {
+            return Validator.validateScript(McFairyAdsData._namespace + "." + McFairyAdsData._namespaceAdapters + "." + McFairyAdsData._namespaceAdaptersMcFairyAds, McFairyAdsData._mcFairyAdsInterstitialClassName);
+        }
+
+        public bool validateSequence(McFairyAdsData.InterstitialAdType interstitialAdType)
         {
             for (int x = 0; x < sequence.Length; x++)
             {

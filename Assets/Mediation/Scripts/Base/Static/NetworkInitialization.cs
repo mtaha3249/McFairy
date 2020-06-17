@@ -44,8 +44,8 @@ namespace McFairy.Base
                 case interstitialID:
                     if (!initializedAds.Contains(Convert.ToInt32(convertedEnum)) && GetAdNetwork<T, InterstitialBase>(adType) != null)
                     {
-                        GetAdNetwork<EditableScript.InterstitialAdType, InterstitialBase>((EditableScript.InterstitialAdType)convertedEnum).Initialize
-                            (EditableScript.getId(adType), EditableScript.getAppId(adType));
+                        GetAdNetwork<McFairyAdsData.InterstitialAdType, InterstitialBase>((McFairyAdsData.InterstitialAdType)convertedEnum).Initialize
+                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType));
                         Logs.ShowLog(adType.ToString() + " Interstitial Initialized", LogType.Log);
                         initializedAds.Add(Convert.ToInt32(convertedEnum));
                         return true;
@@ -54,8 +54,8 @@ namespace McFairy.Base
                 case rewardedVideoID:
                     if (!initializedAds.Contains(Convert.ToInt32(convertedEnum)) && GetAdNetwork<T, RewardedBase>(adType) != null)
                     {
-                        GetAdNetwork<EditableScript.RewardedAdType, RewardedBase>((EditableScript.RewardedAdType)convertedEnum).Initialize
-                            (EditableScript.getId(adType), EditableScript.getAppId(adType));
+                        GetAdNetwork<McFairyAdsData.RewardedAdType, RewardedBase>((McFairyAdsData.RewardedAdType)convertedEnum).Initialize
+                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType));
                         Logs.ShowLog(adType.ToString() + " Rewarded Initialized", LogType.Log);
                         initializedAds.Add(Convert.ToInt32(convertedEnum));
                         return true;
@@ -64,8 +64,8 @@ namespace McFairy.Base
                 case bannerID:
                     if (!initializedAds.Contains(Convert.ToInt32(convertedEnum)) && GetAdNetwork<T, BannerBase>(adType) != null)
                     {
-                        GetAdNetwork<EditableScript.BannerAdType, BannerBase>((EditableScript.BannerAdType)convertedEnum).Initialize
-                            (EditableScript.getId(adType), EditableScript.getAppId(adType));
+                        GetAdNetwork<McFairyAdsData.BannerAdType, BannerBase>((McFairyAdsData.BannerAdType)convertedEnum).Initialize
+                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType));
                         Logs.ShowLog(adType.ToString() + " Banner Initialized", LogType.Log);
                         initializedAds.Add(Convert.ToInt32(convertedEnum));
                         return true;
@@ -74,8 +74,8 @@ namespace McFairy.Base
                 case nativeID:
                     if (!initializedAds.Contains(Convert.ToInt32(convertedEnum)) && GetAdNetwork<T, NativeBase>(adType) != null)
                     {
-                        GetAdNetwork<EditableScript.NativeAdType, NativeBase>((EditableScript.NativeAdType)convertedEnum).Initialize
-                            (EditableScript.getId(adType), EditableScript.getAppId(adType));
+                        GetAdNetwork<McFairyAdsData.NativeAdType, NativeBase>((McFairyAdsData.NativeAdType)convertedEnum).Initialize
+                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType));
                         Logs.ShowLog(adType.ToString() + " Banner Initialized", LogType.Log);
                         initializedAds.Add(Convert.ToInt32(convertedEnum));
                         return true;
