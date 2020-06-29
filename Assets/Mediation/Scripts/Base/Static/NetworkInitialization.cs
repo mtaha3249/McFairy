@@ -35,8 +35,9 @@ namespace McFairy.Base
         /// <param name="adType">type of ad to initialzed</param>
         /// <param name="initializedAds">list of ads initialized</param>
         /// <param name="uIdentifier">unique identifier of ad Network, use const of this class</param>
+        /// <param name="consent">consent provided by user</param>
         /// <returns>true if initialzed, false if already initialzed</returns>
-        public static bool InitializeAd<T>(T adType, List<int> initializedAds, int uIdentifier = 0)
+        public static bool InitializeAd<T>(T adType, List<int> initializedAds, int uIdentifier = 0, NetworkType.Consent consent = NetworkType.Consent.Default)
         {
             Enum convertedEnum = Enum.Parse(typeof(T), adType.ToString()) as Enum;
             switch (uIdentifier)
@@ -45,7 +46,7 @@ namespace McFairy.Base
                     if (!initializedAds.Contains(Convert.ToInt32(convertedEnum)) && GetAdNetwork<T, InterstitialBase>(adType) != null)
                     {
                         GetAdNetwork<McFairyAdsData.InterstitialAdType, InterstitialBase>((McFairyAdsData.InterstitialAdType)convertedEnum).Initialize
-                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType));
+                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType), consent);
                         Logs.ShowLog(adType.ToString() + " Interstitial Initialized", LogType.Log);
                         initializedAds.Add(Convert.ToInt32(convertedEnum));
                         return true;
@@ -55,7 +56,7 @@ namespace McFairy.Base
                     if (!initializedAds.Contains(Convert.ToInt32(convertedEnum)) && GetAdNetwork<T, RewardedBase>(adType) != null)
                     {
                         GetAdNetwork<McFairyAdsData.RewardedAdType, RewardedBase>((McFairyAdsData.RewardedAdType)convertedEnum).Initialize
-                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType));
+                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType), consent);
                         Logs.ShowLog(adType.ToString() + " Rewarded Initialized", LogType.Log);
                         initializedAds.Add(Convert.ToInt32(convertedEnum));
                         return true;
@@ -65,7 +66,7 @@ namespace McFairy.Base
                     if (!initializedAds.Contains(Convert.ToInt32(convertedEnum)) && GetAdNetwork<T, BannerBase>(adType) != null)
                     {
                         GetAdNetwork<McFairyAdsData.BannerAdType, BannerBase>((McFairyAdsData.BannerAdType)convertedEnum).Initialize
-                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType));
+                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType), consent);
                         Logs.ShowLog(adType.ToString() + " Banner Initialized", LogType.Log);
                         initializedAds.Add(Convert.ToInt32(convertedEnum));
                         return true;
@@ -75,7 +76,7 @@ namespace McFairy.Base
                     if (!initializedAds.Contains(Convert.ToInt32(convertedEnum)) && GetAdNetwork<T, NativeBase>(adType) != null)
                     {
                         GetAdNetwork<McFairyAdsData.NativeAdType, NativeBase>((McFairyAdsData.NativeAdType)convertedEnum).Initialize
-                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType));
+                            (McFairyAdsData.getId(adType), McFairyAdsData.getAppId(adType), consent);
                         Logs.ShowLog(adType.ToString() + " Banner Initialized", LogType.Log);
                         initializedAds.Add(Convert.ToInt32(convertedEnum));
                         return true;

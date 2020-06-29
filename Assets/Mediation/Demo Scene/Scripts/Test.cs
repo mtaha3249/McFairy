@@ -19,6 +19,16 @@ public class Test : MonoBehaviour
         HideNativeAd();
     }
 
+    public void GrantConsent()
+    {
+        McFairyAdsMediation.Instance.GrantConsent();
+    }
+
+    public void RevokeConsent()
+    {
+        McFairyAdsMediation.Instance.RevokeConsent();
+    }
+
     public void InitializeMcFairy()
     {
         McFairyAdsMediation.Instance.Initialize();

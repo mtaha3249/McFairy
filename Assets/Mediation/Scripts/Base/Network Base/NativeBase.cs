@@ -10,7 +10,7 @@ namespace McFairy.Base
         /// </summary>
         /// <param name="id">interstitial id</param>
         /// <param name="appId">application id</param>
-        public abstract void Initialize(string id = "", string appId = "");
+        public abstract void Initialize(string id = "", string appId = "", NetworkType.Consent consent = NetworkType.Consent.Default);
 
         /// <summary>
         /// Load ad of ad network

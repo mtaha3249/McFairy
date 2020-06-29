@@ -69,11 +69,12 @@ namespace McFairy.Adpater.UnityAds
             Advertisement.Banner.Hide(true);
         }
 
-        public override void Initialize(string id = "", string appId = "")
+        public override void Initialize(string id = "", string appId = "", NetworkType.Consent consent = NetworkType.Consent.Default)
         {
             if (!Advertisement.isInitialized)
             {
                 Advertisement.Initialize(appId);
+                SetConsent(consent);
             }
             placementID = AdSequence.Instance.adIds.unityAdsIds.BannerPlacementID;
         }
@@ -118,6 +119,31 @@ namespace McFairy.Adpater.UnityAds
         {
             LoadAd(bannerSize, bannerPosition);
             Logs.ShowLog("Unity Ads Banner Failed to load with error:" + message, LogType.Log);
+        }
+
+        /// <summary>
+        /// Consent Set to AdNetwork
+        /// </summary>
+        /// <param name="consent">consent by user</param>
+        void SetConsent(NetworkType.Consent consent)
+        {
+            MetaData gdprMetaData;
+            switch (consent)
+            {
+                case NetworkType.Consent.Granted:
+                    gdprMetaData = new MetaData("gdpr");
+                    gdprMetaData.Set("consent", "true");
+                    Advertisement.SetMetaData(gdprMetaData);
+                    break;
+                case NetworkType.Consent.Revoked:
+                    gdprMetaData = new MetaData("gdpr");
+                    gdprMetaData.Set("consent", "false");
+                    Advertisement.SetMetaData(gdprMetaData);
+                    break;
+                case NetworkType.Consent.Default:
+                    // No gdpr
+                    break;
+            }
         }
     }
 }

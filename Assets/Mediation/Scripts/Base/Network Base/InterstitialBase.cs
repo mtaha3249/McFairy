@@ -7,7 +7,8 @@
         /// </summary>
         /// <param name="id">interstitial id</param>
         /// <param name="appId">application id</param>
-        public abstract void Initialize(string id = "", string appId = "");
+        /// <param name="consent">consent type provided by user</param>
+        public abstract void Initialize(string id = "", string appId = "", NetworkType.Consent consent = NetworkType.Consent.Default);
 
         /// <summary>
         /// Load ad of ad network

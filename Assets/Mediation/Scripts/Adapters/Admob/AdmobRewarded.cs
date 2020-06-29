@@ -10,11 +10,13 @@ namespace McFairy.Adpater.Admob
     {
         bool _isAdLoaded = false;
         private RewardedAd rewardedAd;
+        NetworkType.Consent Adconsent;
 
-        public override void Initialize(string id = "", string appId = "")
+        public override void Initialize(string id = "", string appId = "", NetworkType.Consent consent = NetworkType.Consent.Default)
         {
             MobileAds.Initialize(initStatus => { });
             this.rewardedAd = new RewardedAd(id);
+            Adconsent = consent;
 
             this.rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
             this.rewardedAd.OnAdFailedToLoad += HandleRewardedAdFailedToLoad;
@@ -68,7 +70,7 @@ namespace McFairy.Adpater.Admob
 
         public override void LoadAd()
         {
-            AdRequest request = new AdRequest.Builder().Build();
+            AdRequest request = SetConsent(Adconsent);
             this.rewardedAd.LoadAd(request);
         }
 
@@ -81,6 +83,28 @@ namespace McFairy.Adpater.Admob
         public override bool isAdLoaded()
         {
             return _isAdLoaded;
+        }
+
+        /// <summary>
+        /// Consent Set to AdNetwork
+        /// </summary>
+        /// <param name="consent">consent by user</param>
+        AdRequest SetConsent(NetworkType.Consent consent)
+        {
+            AdRequest request;
+            switch (consent)
+            {
+                case NetworkType.Consent.Granted:
+                    request = new AdRequest.Builder().Build();
+                    return request;
+                case NetworkType.Consent.Revoked:
+                    request = new AdRequest.Builder().AddExtra("npa", "1").Build();
+                    return request;
+                case NetworkType.Consent.Default:
+                    request = new AdRequest.Builder().Build();
+                    return request;
+            }
+            return null;
         }
     }
 }

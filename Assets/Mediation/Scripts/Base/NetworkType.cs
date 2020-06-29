@@ -20,6 +20,13 @@ namespace McFairy.Base
             MidScene3 = 10
         }
 
+        public enum Consent
+        {
+            Granted = 0,
+            Revoked = 1,
+            Default = 2
+        }
+
         public enum BannerPosition
         {
             Top_Center = 0,

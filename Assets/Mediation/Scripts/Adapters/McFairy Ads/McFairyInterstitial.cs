@@ -11,7 +11,7 @@ namespace McFairy.Adpater.McFairyAds
         GameObject interstitial;
         bool _isAdLoaded;
 
-        public override void Initialize(string id = "", string appId = "")
+        public override void Initialize(string id = "", string appId = "", NetworkType.Consent consent = NetworkType.Consent.Default)
         {
             interstitial = AdSequence.Instance.CreateInterstitial(McFairyAdsMediation.Instance.transform);
         }

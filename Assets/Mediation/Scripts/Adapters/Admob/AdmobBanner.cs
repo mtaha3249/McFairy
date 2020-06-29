@@ -10,6 +10,7 @@ namespace McFairy.Adpater.Admob
     {
         private BannerView bannerView;
         string ID = "";
+        NetworkType.Consent Adconsent;
 
         public override void HideAd()
         {
@@ -23,8 +24,9 @@ namespace McFairy.Adpater.Admob
             this.bannerView.OnAdLeavingApplication -= HandleOnAdLeavingApplication;
         }
 
-        public override void Initialize(string id = "", string appId = "")
+        public override void Initialize(string id = "", string appId = "", NetworkType.Consent consent = NetworkType.Consent.Default)
         {
+            Adconsent = consent;
             MobileAds.Initialize(initStatus => { });
             ID = id;
         }
@@ -61,7 +63,7 @@ namespace McFairy.Adpater.Admob
 
         private void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e)
         {
-            AdRequest request = new AdRequest.Builder().Build();
+            AdRequest request = SetConsent(Adconsent);
             this.bannerView.LoadAd(request);
             Logs.ShowLog("Admob Banner failed to load with error: " + e.Message, LogType.Log);
         }
@@ -114,6 +116,28 @@ namespace McFairy.Adpater.Admob
                     break;
             }
             return (T)adPosition;
+        }
+
+        /// <summary>
+        /// Consent Set to AdNetwork
+        /// </summary>
+        /// <param name="consent">consent by user</param>
+        AdRequest SetConsent(NetworkType.Consent consent)
+        {
+            AdRequest request;
+            switch (consent)
+            {
+                case NetworkType.Consent.Granted:
+                    request = new AdRequest.Builder().Build();
+                    return request;
+                case NetworkType.Consent.Revoked:
+                    request = new AdRequest.Builder().AddExtra("npa", "1").Build();
+                    return request;
+                case NetworkType.Consent.Default:
+                    request = new AdRequest.Builder().Build();
+                    return request;
+            }
+            return null;
         }
     }
 }

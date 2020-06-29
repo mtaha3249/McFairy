@@ -9,7 +9,7 @@ namespace McFairy.Adpater.AudienceNetwork
     {
         bool _isAdLoaded = false;
         private InterstitialAd interstitialAd;
-        public override void Initialize(string id = "", string appId = "")
+        public override void Initialize(string id = "", string appId = "", NetworkType.Consent consent = NetworkType.Consent.Default)
         {
 #if !UNITY_EDITOR
             if (!AudienceNetworkAds.IsInitialized())

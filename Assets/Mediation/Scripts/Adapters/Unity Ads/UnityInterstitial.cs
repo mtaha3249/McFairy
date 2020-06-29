@@ -10,11 +10,12 @@ namespace McFairy.Adpater.UnityAds
     {
         string placementID = "";
 
-        public override void Initialize(string id = "", string appId = "")
+        public override void Initialize(string id = "", string appId = "", NetworkType.Consent consent = NetworkType.Consent.Default)
         {
             if (!Advertisement.isInitialized)
             {
                 Advertisement.Initialize(appId);
+                SetConsent(consent);
             }
             placementID = AdSequence.Instance.adIds.unityAdsIds.InterstitialPlacementID;
         }
@@ -34,6 +35,31 @@ namespace McFairy.Adpater.UnityAds
         {
             Logs.ShowLog(Advertisement.IsReady(placementID) ? "Unity Ads Interstitial Loaded" : "Unity Ads Interstitial not Loaded", LogType.Log);
             return Advertisement.IsReady(placementID);
+        }
+
+        /// <summary>
+        /// Consent Set to AdNetwork
+        /// </summary>
+        /// <param name="consent">consent by user</param>
+        void SetConsent(NetworkType.Consent consent)
+        {
+            MetaData gdprMetaData;
+            switch (consent)
+            {
+                case NetworkType.Consent.Granted:
+                    gdprMetaData = new MetaData("gdpr");
+                    gdprMetaData.Set("consent", "true");
+                    Advertisement.SetMetaData(gdprMetaData);
+                    break;
+                case NetworkType.Consent.Revoked:
+                    gdprMetaData = new MetaData("gdpr");
+                    gdprMetaData.Set("consent", "false");
+                    Advertisement.SetMetaData(gdprMetaData);
+                    break;
+                case NetworkType.Consent.Default:
+                    // No gdpr
+                    break;
+            }
         }
     }
 }

@@ -22,6 +22,17 @@ namespace McFairy.Editor.SO
 
         public override void OnInspectorGUI()
         {
+            // layout styling
+            var guiMessageStyle = new GUIStyle(GUI.skin.label);
+            guiMessageStyle.wordWrap = true;
+            guiMessageStyle.font = (Font)Resources.Load("Font/Font");
+#if UNITY_PRO_LICENSE
+            guiMessageStyle.normal.textColor = Color.white;
+#else
+			guiMessageStyle.normal.textColor = Color.black;
+#endif
+            guiMessageStyle.fontStyle = FontStyle.Bold;
+
             // variables caching
             DataCaching();
             ScriptsValidation();
@@ -37,17 +48,10 @@ namespace McFairy.Editor.SO
             EditorGUILayout.PropertyField(adTarget.FindProperty("PackageName"), new GUIContent("Package Name", "Packagename of game"), true);
             EditorGUILayout.PropertyField(adTarget.FindProperty("platform"), new GUIContent("Platform", "Launching platform"), true);
             EditorGUILayout.PropertyField(adTarget.FindProperty("hideAds"), new GUIContent("Hide All Ads", "Toogle for Hide Ads"), true);
-
-            // layout styling
-            var guiMessageStyle = new GUIStyle(GUI.skin.label);
-            guiMessageStyle.wordWrap = true;
-            guiMessageStyle.font = (Font)Resources.Load("Font/Font");
-#if UNITY_PRO_LICENSE
-            guiMessageStyle.normal.textColor = Color.white;
-#else
-			guiMessageStyle.normal.textColor = Color.black;
-#endif
-            guiMessageStyle.fontStyle = FontStyle.Bold;
+            EditorGUILayout.HelpBox("Consent is given by user. Visit documentation for callbacks.", MessageType.Info);
+            GUI.enabled = false;
+            EditorGUILayout.PropertyField(adTarget.FindProperty("consent"), new GUIContent("Consent", "Consent given my user"), true);
+            GUI.enabled = true;
 
             // creating ad sequence
             EditorGUILayout.Space();

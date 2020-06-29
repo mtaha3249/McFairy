@@ -18,6 +18,7 @@ namespace McFairy.Adpater.Admob
         AdLoader adLoader;
 
         GameObject registerObject;
+        NetworkType.Consent Adconsent;
 
         public override void HideAd()
         {
@@ -25,9 +26,10 @@ namespace McFairy.Adpater.Admob
             Logs.ShowLog("Hiding Admob Native Ad", LogType.Log);
         }
 
-        public override void Initialize(string id = "", string appId = "")
+        public override void Initialize(string id = "", string appId = "", NetworkType.Consent consent = NetworkType.Consent.Default)
         {
             MobileAds.Initialize(initStatus => { });
+            Adconsent = consent;
             adLoader = new AdLoader.Builder(id).ForUnifiedNativeAd().Build();
             adLoader.OnUnifiedNativeAdLoaded += AdmobNativeAdLoaded;
             adLoader.OnAdFailedToLoad += AdmobNativeAdFailed;
@@ -58,7 +60,7 @@ namespace McFairy.Adpater.Admob
             this.adHeadline = adHeadline;
             this.adCallToAction = adCallToAction;
 
-            adLoader.LoadAd(new AdRequest.Builder().Build());
+            adLoader.LoadAd(SetConsent(Adconsent));
 
             Logs.ShowLog("Loading Admob Native Ad", LogType.Log);
         }
@@ -86,6 +88,28 @@ namespace McFairy.Adpater.Admob
             this.registerObject.SetActive(true);
 
             Logs.ShowLog("Showing Admob Native Ad", LogType.Log);
+        }
+
+        /// <summary>
+        /// Consent Set to AdNetwork
+        /// </summary>
+        /// <param name="consent">consent by user</param>
+        AdRequest SetConsent(NetworkType.Consent consent)
+        {
+            AdRequest request;
+            switch (consent)
+            {
+                case NetworkType.Consent.Granted:
+                    request = new AdRequest.Builder().Build();
+                    return request;
+                case NetworkType.Consent.Revoked:
+                    request = new AdRequest.Builder().AddExtra("npa", "1").Build();
+                    return request;
+                case NetworkType.Consent.Default:
+                    request = new AdRequest.Builder().Build();
+                    return request;
+            }
+            return null;
         }
     }
 }

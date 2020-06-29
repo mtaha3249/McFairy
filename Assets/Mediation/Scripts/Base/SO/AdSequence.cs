@@ -38,6 +38,7 @@ namespace McFairy.SO
 #endif
         #endregion
 
+        public NetworkType.Consent consent = NetworkType.Consent.Default;
         public bool hideAds;
         public NetworkType.InitializiationType Init;
         public NetworkType.LogLevel logType;

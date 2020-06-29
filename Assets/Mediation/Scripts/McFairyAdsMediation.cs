@@ -65,14 +65,42 @@ namespace McFairy
 
             if (AdSequence.Instance.Init == NetworkType.InitializiationType.Auto)
             {
+                DefaultConsent();
                 Initialize();
             }
+        }
+
+        /// <summary>
+        /// Grant Consent by User
+        /// </summary>
+        public void GrantConsent()
+        {
+            AdSequence.Instance.consent = NetworkType.Consent.Granted;
+            Logs.ShowLog("Consent Granted", LogType.Log);
+        }
+
+        /// <summary>
+        /// Revoke Consent by User
+        /// </summary>
+        public void RevokeConsent()
+        {
+            AdSequence.Instance.consent = NetworkType.Consent.Revoked;
+            Logs.ShowLog("Consent Revoked", LogType.Log);
+        }
+
+        void DefaultConsent()
+        {
+            AdSequence.Instance.consent = NetworkType.Consent.Default;
+            Logs.ShowLog("Consent Default", LogType.Log);
         }
 
         public void Initialize()
         {
             if (AdSequence.Instance.hideAds)
+            {
+                Logs.ShowLog("Hide Ads are true. So, not initialization McFairy.", LogType.Log);
                 return;
+            }
             InitMcFairy();
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -119,30 +147,37 @@ namespace McFairy
                 // iterate each scene
                 for (int y = 0; y < AdSequence.Instance.sequence[x].interstitial.sequence.Length; y++)
                 {
-                    NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].interstitial.sequence[y], initializedInterstitialAds, NetworkInitialization.interstitialID);
+                    NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].interstitial.sequence[y], initializedInterstitialAds, 
+                        NetworkInitialization.interstitialID, AdSequence.Instance.consent);
                 }
-                NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].interstitial.failOver, initializedInterstitialAds, NetworkInitialization.interstitialID);
+                NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].interstitial.failOver, initializedInterstitialAds, 
+                    NetworkInitialization.interstitialID, AdSequence.Instance.consent);
 
                 // Rewarded Initalization
                 // iterate each scene
                 for (int y = 0; y < AdSequence.Instance.sequence[x].rewarded.sequence.Length; y++)
                 {
-                    NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].rewarded.sequence[y], initializedRewardedAds, NetworkInitialization.rewardedVideoID);
+                    NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].rewarded.sequence[y], initializedRewardedAds, 
+                        NetworkInitialization.rewardedVideoID, AdSequence.Instance.consent);
                 }
-                NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].rewarded.failOver, initializedRewardedAds, NetworkInitialization.rewardedVideoID);
+                NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].rewarded.failOver, initializedRewardedAds, 
+                    NetworkInitialization.rewardedVideoID, AdSequence.Instance.consent);
 
                 // Banner Initalization
                 // iterate each scene
                 for (int y = 0; y < AdSequence.Instance.sequence[x].banner.sequence.Length; y++)
                 {
-                    NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].banner.sequence[y], initializedBannerAds, NetworkInitialization.bannerID);
+                    NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].banner.sequence[y], initializedBannerAds, 
+                        NetworkInitialization.bannerID, AdSequence.Instance.consent);
                 }
-                NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].banner.failOver, initializedBannerAds, NetworkInitialization.bannerID);
+                NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].banner.failOver, initializedBannerAds, 
+                    NetworkInitialization.bannerID, AdSequence.Instance.consent);
 
                 // NativeAd Initalization
                 // iterate each scene
                 if (AdSequence.Instance.sequence[x].nativeAd._enable)
-                    NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].nativeAd.sequence, initializedNativeAds, NetworkInitialization.nativeID);
+                    NetworkInitialization.InitializeAd(AdSequence.Instance.sequence[x].nativeAd.sequence, initializedNativeAds, 
+                        NetworkInitialization.nativeID, AdSequence.Instance.consent);
             }
 
             Logs.ShowLog("InitializeAds Initialized", LogType.Log);
